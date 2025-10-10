@@ -1,6 +1,8 @@
 import fastify from "fastify";
 import "express-async-errors"
 
+
+
 const app = fastify()
 
 app.get('/', async (request, reply) => {
