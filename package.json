@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/MartinianoGomes/gymplanner_api#readme",
   "dependencies": {
+    "@prisma/client": "^6.17.1",
     "express-async-errors": "^3.1.1",
     "fastify": "^5.6.1",
     "pino-pretty": "^13.1.2",
