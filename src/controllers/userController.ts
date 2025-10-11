@@ -1,4 +1,3 @@
-import fastify from "fastify";
 import { prisma } from "../prisma.js";
 import type { User } from "../types/user.js";
 import { compare, hash } from "bcryptjs";
