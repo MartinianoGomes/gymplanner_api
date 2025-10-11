@@ -1,28 +1,35 @@
 import fastify from "fastify";
 import "express-async-errors"
+import fastifyCors from "@fastify/cors";
+import fastifyHelmet from "@fastify/helmet";
 
+const server = fastify()
 
+server.register(fastifyHelmet)
+server.register(fastifyCors)
 
-const app = fastify()
-
-app.get('/', async (request, reply) => {
+server.get('/', async (request, reply) => {
     return reply.status(201).send('Sucesso!')
 })
 
-app.post('/', async (request, reply) => {
+server.post('/', async (request, reply) => {
     return reply.status(201).send('Sucesso!')
 })
 
-app.put('/', async (request, reply) => {
+server.put('/', async (request, reply) => {
     return reply.status(201).send('Sucesso!')
 })
 
-app.delete('/', async (request, reply) => {
+server.delete('/', async (request, reply) => {
     return reply.status(201).send('Sucesso.')
 })
 
 
 
-app.listen({ port: 3333 }).then(() => {
-    console.log("HTTP server running")
-})
+server.listen({ port: 3000 }, (err, address) => {
+    if (err) {
+        console.error(err);
+        process.exit(1);
+    }
+    console.log(`Server listening on ${address}`);
+});
