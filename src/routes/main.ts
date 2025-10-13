@@ -13,3 +13,11 @@ routes.get('/', async (req, res) => {
 
     return res.send(data);
 })
+
+routes.get('/ping', (req, res) => {
+    const pong = {
+        pong: true
+    }
+
+    return res.send(pong);
+})
