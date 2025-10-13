@@ -1,5 +1,5 @@
 import fastify from "fastify";
-import { createUser } from "../controllers/userController.js";
+import * as userController from "../controllers/userController.js";
 
 const routes = fastify();
 
@@ -15,3 +15,5 @@ routes.get('/', async (req, res) => {
 })
 
 routes.get('/ping', (req, res) => res.send({ pong: true }))
+
+routes.post('/user/register', userController.createUser);
