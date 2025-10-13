@@ -8,24 +8,6 @@ const server = fastify()
 server.register(fastifyHelmet)
 server.register(fastifyCors)
 
-server.get('/', async (request, reply) => {
-    return reply.status(201).send('Sucesso!')
-})
-
-server.post('/', async (request, reply) => {
-    return reply.status(201).send('Sucesso!')
-})
-
-server.put('/', async (request, reply) => {
-    return reply.status(201).send('Sucesso!')
-})
-
-server.delete('/', async (request, reply) => {
-    return reply.status(201).send('Sucesso.')
-})
-
-
-
 server.listen({ port: 3000 }, (err, address) => {
     if (err) {
         console.error(err);
