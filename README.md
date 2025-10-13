@@ -10,5 +10,5 @@ Este repositório conterá toda a estrutura e código da API para o projeto GymP
 
 * [@martinianogomes](https://github.com/MartinianoGomes)
 * [@correasouza](https://github.com/correasouza)
-* [@xyxmota](https://github.com/xyxmota)
+* [@lucassmotta](https://github.com/lucassmotta)
 * [@Michelangelo-Costa](https://github.com/Michelangelo-Costa)
