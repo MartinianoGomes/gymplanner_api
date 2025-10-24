@@ -17,8 +17,7 @@ const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
         data: {
             name,
             email: email.toLowerCase(),
-            password: hashPassword,
-            role: "user"
+            password: hashPassword
         }
     });
 
@@ -28,7 +27,6 @@ const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
         id: user.id,
         name: user.name,
         email: user.email,
-        role: user.role,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
     }

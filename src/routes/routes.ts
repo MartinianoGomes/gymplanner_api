@@ -1,19 +1,18 @@
-import fastify from "fastify";
-import * as userController from "../controllers/userController.js";
+import type { FastifyInstance, FastifyPluginOptions } from "fastify";
 
-const routes = fastify();
+async function globalRouter(fastify: FastifyInstance, options: FastifyPluginOptions) {
+    fastify.get('/', async (req, res) => {
+        const data = {
+            name: "GymPlanner API",
+            version: "1.0.0",
+            timestamp: new Date().toISOString(),
+            status: "success"
+        }
 
-routes.get('/', async (req, res) => {
-    const data = {
-        name: "GymPlanner API",
-        version: "1.0.0",
-        timestamp: new Date().toISOString(),
-        status: "success"
-    }
+        return res.send(data);
+    })
 
-    return res.send(data);
-})
+    fastify.get('/ping', (req, res) => res.send({ pong: true }))
+}
 
-routes.get('/ping', (req, res) => res.send({ pong: true }))
-
-routes.post('/user/register', userController.createUser);
+export { globalRouter }
