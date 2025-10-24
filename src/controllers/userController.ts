@@ -1,5 +1,5 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import { prisma } from "../prisma.js";
+import { prisma } from "../lib/prisma.js";
 import type { User } from "../types/user.js";
 import { compare, hash } from "bcryptjs";
 import { v4 } from "uuid";
