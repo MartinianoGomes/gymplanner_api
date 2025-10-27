@@ -1,11 +1,10 @@
 import fastify from "fastify";
-import "express-async-errors"
 import fastifyCors from "@fastify/cors";
 import fastifyHelmet from "@fastify/helmet";
 import { userRouter } from "./routes/userRoutes/createUser.js";
 import { globalRouter } from "./routes/routes.js";
 
-const server = fastify()
+const server = fastify({ logger: true })
 
 server.register(fastifyHelmet)
 server.register(fastifyCors)
@@ -13,10 +12,15 @@ server.register(fastifyCors)
 server.register(globalRouter);
 server.register(userRouter);
 
-server.listen({ port: 3000 }, (err, address) => {
-    if (err) {
-        console.error(err);
+const port = Number(process.env.PORT) || 3000;
+
+const start = async () => {
+    try {
+        await server.listen({ port: port, host: '0.0.0.0' });
+    } catch (err) {
+        server.log.error(err);
         process.exit(1);
     }
-    console.log(`Server listening on ${address}`);
-});
+};
+
+start()
