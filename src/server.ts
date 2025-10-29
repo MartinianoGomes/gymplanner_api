@@ -1,8 +1,8 @@
 import fastify from "fastify";
 import fastifyCors from "@fastify/cors";
 import fastifyHelmet from "@fastify/helmet";
-import { userRouter } from "./routes/routes.js";
-import { globalRouter } from "./routes/routes.js";
+import { userRoutes } from "./routes/userRoutes.js";
+import { globalRouter } from "./routes/globalRoutes.js";
 
 const server = fastify({ logger: true })
 
@@ -10,7 +10,7 @@ server.register(fastifyHelmet)
 server.register(fastifyCors)
 
 server.register(globalRouter);
-server.register(userRouter);
+server.register(userRoutes, { prefix: '/user' });
 
 const port = Number(process.env.PORT) || 3000;
 
