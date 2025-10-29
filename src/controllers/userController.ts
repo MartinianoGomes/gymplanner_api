@@ -91,6 +91,4 @@ const deleteUser = async (request: FastifyRequest, reply: FastifyReply) => {
     }
 }
 
-// const getUserById = (req, res) => { }
-
 export { createUser, updateUser, getAllUsers, deleteUser }
