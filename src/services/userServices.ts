@@ -27,4 +27,4 @@ const getUserByToken = async (token: string) => {
     return user.id;
 }
 
-export { userLogin };
+export { userLogin, getUserByToken };
