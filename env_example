@@ -9,3 +9,5 @@
 # <DATABASE_NAME>: O nome do banco de dados que você quer criar (ex: "meu-projeto-dev"). O MongoDB/Prisma o criará automaticamente na primeira escrita.
 
 DATABASE_URL="mongodb+srv://root:randompassword@cluster0.ab1cd.mongodb.net/mydb?retryWrites=true&w=majority"
+
+JWT_SECRET="yoursecret"
