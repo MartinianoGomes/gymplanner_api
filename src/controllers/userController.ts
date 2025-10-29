@@ -63,10 +63,20 @@ const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
     }
 }
 
-// const getUser = (req, res) => { }
+const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const users = await prisma.user.findMany();
+
+        if (!users) return null
+
+        return JSON.stringify(users);
+    } catch (error) {
+        return reply.status(404).send({ error, message: "Users not found!" })
+    }
+}
 
 // const getUserById = (req, res) => { }
 
 // const deleteUser = (req, res) => { }
 
-export { createUser, updateUser }
+export { createUser, updateUser, getAllUsers }
