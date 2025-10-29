@@ -15,9 +15,9 @@ const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
     const user = await prisma.user.create({
         data: {
-            name,
+            name: name,
             email: email.toLowerCase(),
-            password: hashPassword
+            password: hashPassword,
         }
     });
 

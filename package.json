@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch src/server.ts"
+    "dev": "prisma db push && tsx watch src/server.ts",
+    "prisma-gen": "npx prisma generate"
   },
   "repository": {
     "type": "git",
