@@ -1,7 +1,7 @@
 import fastify from "fastify";
 import fastifyCors from "@fastify/cors";
 import fastifyHelmet from "@fastify/helmet";
-import { userRouter } from "./routes/userRoutes/createUser.js";
+import { userRouter } from "./routes/routes.js";
 import { globalRouter } from "./routes/routes.js";
 
 const server = fastify({ logger: true })

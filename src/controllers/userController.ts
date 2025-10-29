@@ -32,11 +32,28 @@ const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
     }
 }
 
+const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { name, email, password } = request.body as User;
+
+    const hashPassword = await hash(password, 10);
+
+    const userUpdated = await prisma.user.update({
+        where: { email },
+        data: {
+            name: name,
+            email: email,
+            password: hashPassword
+        }
+    });
+
+    if (!userUpdated) return null
+
+    return userUpdated;
+}
+
 // const getUser = (req, res) => { }
 
 // const getUserById = (req, res) => { }
-
-// const updateUser = (req, res) => { }
 
 // const deleteUser = (req, res) => { }
 

@@ -1,4 +1,6 @@
 import type { FastifyInstance, FastifyPluginOptions } from "fastify";
+import { createUser } from "../controllers/userController.js";
+import { updateUser } from "./userRoutes/updateUser.js";
 
 async function globalRouter(fastify: FastifyInstance, options: FastifyPluginOptions) {
     fastify.get('/', async (req, res) => {
@@ -15,4 +17,9 @@ async function globalRouter(fastify: FastifyInstance, options: FastifyPluginOpti
     fastify.get('/ping', (req, res) => res.send({ pong: true }))
 }
 
-export { globalRouter }
+async function userRouter(fastify: FastifyInstance, options: FastifyPluginOptions) {
+    fastify.post('/user', async (req, res) => createUser)
+    fastify.post('/user', async (req, res) => updateUser)
+}
+
+export { globalRouter, userRouter }
