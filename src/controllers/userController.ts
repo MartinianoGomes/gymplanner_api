@@ -75,8 +75,22 @@ const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
     }
 }
 
+const deleteUser = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+
+    if (!id) return null
+
+    try {
+        await prisma.user.delete({
+            where: { id }
+        })
+
+        return reply.status(200).send({ message: "User deleted successfully!" })
+    } catch (error) {
+        return reply.status(404).send({ error, message: "Unable to delete the user. An error occurred." })
+    }
+}
+
 // const getUserById = (req, res) => { }
 
-// const deleteUser = (req, res) => { }
-
-export { createUser, updateUser, getAllUsers }
+export { createUser, updateUser, getAllUsers, deleteUser }
