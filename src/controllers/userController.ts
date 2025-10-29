@@ -33,22 +33,34 @@ const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
 }
 
 const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
-    const { name, email, password } = request.body as User;
+    const { id } = request.params as { id: string }
 
-    const hashPassword = await hash(password, 10);
+    const { name, email, password } = request.body as Partial<User>;
 
-    const userUpdated = await prisma.user.update({
-        where: { email },
-        data: {
-            name: name,
-            email: email,
-            password: hashPassword
-        }
-    });
+    const updateData: {
+        name?: string;
+        email?: string;
+        password?: string;
+    } = {};
 
-    if (!userUpdated) return null
+    if (name) updateData.name = name;
 
-    return userUpdated;
+    if (email) updateData.email = email.toLocaleLowerCase();
+
+    if (password) updateData.password = await hash(password, 10);
+
+    try {
+        const userUpdated = await prisma.user.update({
+            where: { id: id },
+            data: updateData
+        })
+
+        if (!userUpdated) return null
+
+        return userUpdated;
+    } catch (error) {
+        return reply.status(404).send({ error, message: "User not found!" })
+    }
 }
 
 // const getUser = (req, res) => { }
@@ -57,4 +69,4 @@ const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
 // const deleteUser = (req, res) => { }
 
-export { createUser }
+export { createUser, updateUser }
