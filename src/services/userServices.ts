@@ -1,0 +1,23 @@
+import type { FastifyReply, FastifyRequest } from "fastify";
+import { prisma } from "../lib/prisma.js";
+import { compare } from "bcryptjs";
+import { v4 } from "uuid";
+
+const userLogin = async (email: string, password: string) => {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) return null;
+
+    const validPassword = await compare(password, user.password);
+    if (!validPassword) return null;
+
+    const token = v4();
+
+    await prisma.user.update({
+        where: { email: email },
+        data: { token }
+    })
+
+    return token;
+}
+
+export { userLogin };
