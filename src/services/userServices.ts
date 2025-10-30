@@ -43,4 +43,11 @@ const getUserByToken = async (token: string) => {
     return user.id;
 }
 
+const getRoleUser = async (token: string) => {
+    const user = await prisma.user.findFirst({ where: { token } })
+    if (!user) return null;
+
+    return user.role;
+}
+
 export { login, getUserByToken };
