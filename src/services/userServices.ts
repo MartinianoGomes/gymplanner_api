@@ -2,34 +2,36 @@ import { fastify, type FastifyInstance, type FastifyReply, type FastifyRequest }
 import { prisma } from "../lib/prisma.js";
 import { compare } from "bcryptjs";
 import { v4 } from "uuid";
+import { error } from "console";
 
 const login = async (
     fastify: FastifyInstance,
     email: string,
-    password: string
+    password: string,
 ) => {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return null;
 
     const validPassword = await compare(password, user.password);
-    if (!validPassword) return null;
+    if (!validPassword) return null
 
     const jti = v4();
 
     const token = fastify.jwt.sign(
         {
             userId: user.id,
-            email: user.email
+            email: user.email,
+            role: user.role
         },
         {
             sub: user.id,
-            expiresIn: "1d",
+            expiresIn: "5s",
             jti: jti
         }
     );
 
     await prisma.user.update({
-        where: { email: email },
+        where: { id: user.id },
         data: { token }
     })
 
