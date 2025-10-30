@@ -3,7 +3,7 @@ import { prisma } from "../lib/prisma.js";
 import { compare } from "bcryptjs";
 import { v4 } from "uuid";
 
-const userLogin = async (
+const login = async (
     fastify: FastifyInstance,
     email: string,
     password: string
@@ -43,4 +43,4 @@ const getUserByToken = async (token: string) => {
     return user.id;
 }
 
-export { userLogin, getUserByToken };
+export { login, getUserByToken };
