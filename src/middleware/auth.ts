@@ -23,6 +23,8 @@ const authHeader = async (request: FastifyRequest, reply: FastifyReply) => {
     }
 
     (reply as any).userToken = userToken;
+
+    return userToken;
 }
 
 export { authHeader }
