@@ -1,7 +1,8 @@
-import type { FastifyRequest, FastifyReply } from 'fastify';
+import { type FastifyRequest, type FastifyReply, fastify } from 'fastify';
 import { prisma } from "../lib/prisma.js";
 import type { User } from "../types/user.js";
 import { compare, hash } from "bcryptjs";
+import { getUserByToken, login } from '../services/userServices.js';
 
 const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const { name, email, password } = request.body as User;
@@ -90,4 +91,11 @@ const deleteUser = async (request: FastifyRequest, reply: FastifyReply) => {
     }
 }
 
-export { createUser, updateUser, getAllUsers, deleteUser }
+const userLogin = async (request: FastifyRequest, reply: FastifyReply) => {
+    const { email, password } = request.body as User;
+    if (!email || !password) return null;
+
+    login(request.server, email, password);
+}
+
+export { createUser, updateUser, getAllUsers, deleteUser, userLogin }
