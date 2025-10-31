@@ -1,15 +1,19 @@
 import { type FastifyRequest, type FastifyReply, fastify } from 'fastify';
 import { prisma } from "../lib/prisma.js";
 import type { User } from "../types/user.js";
-import { compare, hash } from "bcryptjs";
-import { getUserByToken, login } from '../services/userServices.js';
+import { hash } from "bcryptjs";
+import { login } from '../services/userServices.js';
+import { loginSchema } from '../schemas/loginSchema.js';
+import { userSchema } from '../schemas/userSchema.js';
 
 const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
-    const { name, email, password } = request.body as User;
+    const validateUserInformations = userSchema.safeParse(request.body as User);
+    if (!validateUserInformations.success) return reply.status(400).send({ error: "Invalid user informations." })
+
+    const { name, email, password } = validateUserInformations.data;
 
     const userAlreadyExist = await prisma.user.findUnique({ where: { email } });
-
-    if (userAlreadyExist) return null;
+    if (userAlreadyExist) return reply.status(409).send({ conflict: "This email already register." });
 
     const hashPassword = await hash(password, 10);
 
@@ -37,7 +41,10 @@ const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
 const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string }
 
-    const { name, email, password } = request.body as Partial<User>;
+    const validateUserInformations = userSchema.partial().safeParse(request.body as User);
+    if (!validateUserInformations.success) return reply.status(400).send({ error: "Invalid user informations." })
+
+    const { name, email, password } = validateUserInformations.data;
 
     const updateData: {
         name?: string;
@@ -49,7 +56,7 @@ const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
     if (email) updateData.email = email.toLocaleLowerCase();
 
-    if (password) updateData.password = await hash(password, 10);
+    if (password) updateData.password = await hash(password, 10);;
 
     try {
         const userUpdated = await prisma.user.update({
@@ -57,11 +64,11 @@ const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
             data: updateData
         })
 
-        if (!userUpdated) return null
+        if (!userUpdated) return null;
 
         return userUpdated;
     } catch (error) {
-        return reply.status(404).send({ error, message: "User not found!" })
+        return reply.status(404).send({ error: "User not found!" });
     }
 }
 
@@ -69,35 +76,40 @@ const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
         const users = await prisma.user.findMany();
 
-        if (!users) return null
+        if (!users) return null;
 
         return JSON.stringify(users);
     } catch (error) {
-        return reply.status(404).send({ error, message: "Users not found!" })
+        return reply.status(404).send({ error: "Users not found!" });
     }
 }
 
 const deleteUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
 
-    if (!id) return null
+    if (!id) return null;
 
     try {
         await prisma.user.delete({
             where: { id }
         })
 
-        return reply.status(200).send({ message: "User deleted successfully!" })
+        return reply.status(200).send({ message: "User deleted successfully!" });
     } catch (error) {
-        return reply.status(404).send({ error, message: "Unable to delete the user. An error occurred." })
+        return reply.status(404).send({ error: "Unable to delete the user. An error occurred." });
     }
 }
 
 const userLogin = async (request: FastifyRequest, reply: FastifyReply) => {
-    const { email, password } = request.body as User;
-    if (!email || !password) return null;
+    const validateCredentials = loginSchema.safeParse(request.body as User);
+    if (!validateCredentials.success) return reply.status(400).send({ error: "Invalid credentials." })
 
-    login(request.server, email, password);
+    const { email, password } = validateCredentials.data;
+
+    const token = await login(request.server, email, password);
+    if (!token) return reply.status(401).send({ error: "Incorrect credentials." });
+
+    return reply.status(200).send({ message: "User logged in successfully." });
 }
 
 export { createUser, updateUser, getAllUsers, deleteUser, userLogin }
