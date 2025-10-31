@@ -1,7 +1,7 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
 import { getUserByToken } from "../services/userServices.js";
 
-const authHeader = async (request: FastifyRequest, reply: FastifyReply) => {
+const authMiddleware = async (request: FastifyRequest, reply: FastifyReply) => {
     const authHeader = request.headers["authorization"];
 
     if (!authHeader) {
@@ -27,4 +27,4 @@ const authHeader = async (request: FastifyRequest, reply: FastifyReply) => {
     return userToken;
 }
 
-export { authHeader }
+export { authMiddleware }
