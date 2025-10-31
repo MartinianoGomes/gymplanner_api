@@ -47,7 +47,7 @@ const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
     if (email) updateData.email = email.toLocaleLowerCase();
 
-    if (password) updateData.password = await hash(password, 10);
+    if (password) updateData.password = await hash(password, 10);;
 
     try {
         const userUpdated = await prisma.user.update({
@@ -55,11 +55,11 @@ const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
             data: updateData
         })
 
-        if (!userUpdated) return null
+        if (!userUpdated) return null;
 
         return userUpdated;
     } catch (error) {
-        return reply.status(404).send({ error, message: "User not found!" })
+        return reply.status(404).send({ error: "User not found!" });
     }
 }
 
@@ -67,35 +67,38 @@ const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
         const users = await prisma.user.findMany();
 
-        if (!users) return null
+        if (!users) return null;
 
         return JSON.stringify(users);
     } catch (error) {
-        return reply.status(404).send({ error, message: "Users not found!" })
+        return reply.status(404).send({ error: "Users not found!" });
     }
 }
 
 const deleteUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
 
-    if (!id) return null
+    if (!id) return null;
 
     try {
         await prisma.user.delete({
             where: { id }
         })
 
-        return reply.status(200).send({ message: "User deleted successfully!" })
+        return reply.status(200).send({ message: "User deleted successfully!" });
     } catch (error) {
-        return reply.status(404).send({ error, message: "Unable to delete the user. An error occurred." })
+        return reply.status(404).send({ error: "Unable to delete the user. An error occurred." });
     }
 }
 
 const userLogin = async (request: FastifyRequest, reply: FastifyReply) => {
     const { email, password } = request.body as User;
-    if (!email || !password) return null;
+    if (!email || !password) return reply.status(401).send({ error: "Insert the credentials." });
 
-    login(request.server, email, password);
+    const token = await login(request.server, email, password);
+    if (!token) return reply.status(401).send({ error: "Access danied." });
+
+    return reply.status(200).send({ message: "User logged in successfully." });
 }
 
 export { createUser, updateUser, getAllUsers, deleteUser, userLogin }
