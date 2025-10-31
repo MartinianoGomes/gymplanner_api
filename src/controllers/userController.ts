@@ -70,18 +70,6 @@ const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
     }
 }
 
-const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
-    try {
-        const users = await prisma.user.findMany();
-
-        if (!users) return null;
-
-        return JSON.stringify(users);
-    } catch (error) {
-        return reply.status(404).send({ error: "Users not found!" });
-    }
-}
-
 const deleteUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
 
@@ -110,4 +98,23 @@ const userLogin = async (request: FastifyRequest, reply: FastifyReply) => {
     return reply.status(200).send({ message: "User logged in successfully." });
 }
 
-export { createUser, updateUser, getAllUsers, deleteUser, userLogin }
+const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const users = await prisma.user.findMany();
+
+        if (!users) return null;
+
+        return JSON.stringify(users);
+    } catch (error) {
+        return reply.status(404).send({ error: "Users not found!" });
+    }
+}
+
+const getUserByToken = async (token: string) => {
+    const user = await prisma.user.findFirst({ where: { token } })
+    if (!user) return null;
+
+    return user;
+}
+
+export { createUser, updateUser, deleteUser, userLogin, getAllUsers, getUserByToken }
