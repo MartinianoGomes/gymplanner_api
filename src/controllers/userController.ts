@@ -22,7 +22,6 @@ const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
             name: name,
             email: email.toLowerCase(),
             password: hashPassword,
-            role: "user"
         }
     });
 
@@ -87,7 +86,7 @@ const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
 const deleteUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
 
-    if (!id) return null;
+    if (!id) return reply.status(404).send({ error: "User not found." });
 
     try {
         await prisma.user.delete({
