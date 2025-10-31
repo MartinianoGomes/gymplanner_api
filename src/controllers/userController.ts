@@ -1,15 +1,19 @@
 import { type FastifyRequest, type FastifyReply, fastify } from 'fastify';
 import { prisma } from "../lib/prisma.js";
 import type { User } from "../types/user.js";
-import { compare, hash } from "bcryptjs";
-import { getUserByToken, login } from '../services/userServices.js';
+import { hash } from "bcryptjs";
+import { login } from '../services/userServices.js';
+import { loginSchema } from '../schemas/loginSchema.js';
+import { userSchema } from '../schemas/userSchema.js';
 
 const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
-    const { name, email, password } = request.body as User;
+    const validateUserInformations = userSchema.safeParse(request.body as User);
+    if (!validateUserInformations.success) return reply.status(400).send({ error: "Invalid user informations." })
+
+    const { name, email, password } = validateUserInformations.data;
 
     const userAlreadyExist = await prisma.user.findUnique({ where: { email } });
-
-    if (userAlreadyExist) return null;
+    if (userAlreadyExist) return reply.status(409).send({ conflict: "This email already register." });
 
     const hashPassword = await hash(password, 10);
 
@@ -35,7 +39,10 @@ const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
 const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string }
 
-    const { name, email, password } = request.body as Partial<User>;
+    const validateUserInformations = userSchema.partial().safeParse(request.body as User);
+    if (!validateUserInformations.success) return reply.status(400).send({ error: "Invalid user informations." })
+
+    const { name, email, password } = validateUserInformations.data;
 
     const updateData: {
         name?: string;
@@ -92,11 +99,13 @@ const deleteUser = async (request: FastifyRequest, reply: FastifyReply) => {
 }
 
 const userLogin = async (request: FastifyRequest, reply: FastifyReply) => {
-    const { email, password } = request.body as User;
-    if (!email || !password) return reply.status(401).send({ error: "Insert the credentials." });
+    const validateCredentials = loginSchema.safeParse(request.body as User);
+    if (!validateCredentials.success) return reply.status(400).send({ error: "Invalid credentials." })
+
+    const { email, password } = validateCredentials.data;
 
     const token = await login(request.server, email, password);
-    if (!token) return reply.status(401).send({ error: "Access danied." });
+    if (!token) return reply.status(401).send({ error: "Incorrect credentials." });
 
     return reply.status(200).send({ message: "User logged in successfully." });
 }
