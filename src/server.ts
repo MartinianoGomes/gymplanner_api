@@ -25,6 +25,9 @@ server.register(fastifyJwt, { secret: jwtSecret })
 server.register(globalRouter);
 server.register(userRoutes, { prefix: '/user' });
 
+import { workoutRoutes } from "./routes/workoutRoutes.js";
+server.register(workoutRoutes, { prefix: '/workout' });
+
 const port = Number(process.env.PORT) || 3000;
 
 const start = async () => {
