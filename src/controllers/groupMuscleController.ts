@@ -4,15 +4,19 @@ import type { GroupMuscle } from "../types/groupMuscle.js";
 
 const createGroupMuscle = async (request: FastifyRequest, reply: FastifyReply) => {
   try {
-    const { name, description } = request.body as GroupMuscle;
+    const { name, description = null } = request.body as GroupMuscle;
 
     const gm = await prisma.groupMuscle.create({
-      data: { name, description }
+      data: { 
+        name,
+        description: description ?? null
+      }
     });
 
     return reply.status(201).send(gm);
   } catch (error) {
-    return reply.status(500).send({ error, message: "Unable to create group muscle." });
+    console.error('Error details:', error);
+    return reply.status(500).send({ error, message: "Unable to create group muscle.", details: error });
   }
 }
 
@@ -39,11 +43,14 @@ const getGroupMuscleById = async (request: FastifyRequest, reply: FastifyReply) 
 const updateGroupMuscle = async (request: FastifyRequest, reply: FastifyReply) => {
   try {
     const { id } = request.params as { id: string };
-    const { name, description } = request.body as GroupMuscle;
+    const { name, description = null } = request.body as GroupMuscle;
 
     const updated = await prisma.groupMuscle.update({
       where: { id },
-      data: { name, description }
+      data: { 
+        name,
+        description: description ?? null
+      }
     });
 
     return reply.status(200).send(updated);

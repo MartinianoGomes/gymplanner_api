@@ -1,4 +1,4 @@
 export type GroupMuscle = {
   name: string;
-  description?: string;
+  description: string | null;
 }

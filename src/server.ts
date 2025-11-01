@@ -7,6 +7,7 @@ import fastifyHelmet from "@fastify/helmet";
 
 import { userRoutes } from "./routes/userRoutes.js";
 import { globalRouter } from "./routes/globalRoutes.js";
+import { groupMuscleRoutes } from "./routes/groupMuscleRoutes.js";
 
 const server = fastify({ logger: true })
 
@@ -24,6 +25,7 @@ server.register(fastifyJwt, { secret: jwtSecret })
 
 server.register(globalRouter);
 server.register(userRoutes, { prefix: '/user' });
+server.register(groupMuscleRoutes, { prefix: '/groupmuscle' });
 
 const port = Number(process.env.PORT) || 3000;
 
