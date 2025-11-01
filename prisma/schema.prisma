@@ -19,6 +19,41 @@ model User {
   email     String    @unique
   password  String
   token     String?
+  treinos  Treino[]
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+}
+
+model Treino {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  dia       String
+  exercicios ExerciciosEmTreino[]
+}
+
+model ExerciciosEmTreino {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  TreinoId  String   @db.ObjectId
+  treino    Treino  @relation(fields: [TreinoId], references: [id])
+  exercicioId String   @db.ObjectId
+  exercicio   Exercicio @relation(fields: [exercicioId], references: [id])
+  series     Int
+  repeticoes       Int
+}
+
+model Exercicio {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  grupoMuscularId String @db.ObjectId
+  grupoMuscular  GrupoMuscular @relation(fields: [grupoMuscularId], references: [id])
+  ExerciciosEmTreino ExerciciosEmTreino[]
+}
+
+model GrupoMuscular {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId 
+  name        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  exercicios  Exercicio[]
 }
