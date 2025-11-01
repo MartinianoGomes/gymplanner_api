@@ -5,12 +5,12 @@ import { v4 } from "uuid";
 
 const createWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
   try {
-    const { title, description } = request.body as Workout;
+    const { title, description = null } = request.body as Workout;
 
     const workout = await prisma.workout.create({
       data: {
         title,
-        description
+        description: description ?? null
       }
     });
 
@@ -43,11 +43,14 @@ const getWorkoutById = async (request: FastifyRequest, reply: FastifyReply) => {
 const updateWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
   try {
     const { id } = request.params as { id: string };
-    const { title, description } = request.body as Workout;
+    const { title, description = null } = request.body as Workout;
 
     const updated = await prisma.workout.update({
       where: { id },
-      data: { title, description }
+      data: { 
+        title,
+        description: description ?? null
+      }
     });
 
     return reply.status(200).send(updated);
