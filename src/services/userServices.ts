@@ -29,19 +29,7 @@ const login = async (
         }
     );
 
-    await prisma.user.update({
-        where: { id: user.id },
-        data: { token }
-    })
-
     return token;
 }
 
-const getUserByToken = async (token: string) => {
-    const user = await prisma.user.findFirst({ where: { token } })
-    if (!user) return null;
-
-    return user;
-}
-
-export { login, getUserByToken };
+export { login };
