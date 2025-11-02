@@ -11,7 +11,9 @@ export const verifyJwt = async (request: FastifyRequest, reply: FastifyReply) =>
 
 export const verifyAdmin = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
-        await request.jwtVerify();
+        await verifyJwt(request, reply);
+
+        if (reply.sent) return;
 
         if (request.user.role !== "admin") {
             return reply.status(403).send({ message: "Access denied. Administrator permission required." });
