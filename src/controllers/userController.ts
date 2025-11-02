@@ -38,6 +38,8 @@ const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
 const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string }
 
+    if (!id) return reply.status(400).send({ error: "Please provide the user ID." })
+
     const validateUserInformations = userSchema.partial().safeParse(request.body as User);
     if (!validateUserInformations.success) return reply.status(400).send({ error: "Invalid user informations." })
 
@@ -82,11 +84,9 @@ const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
             }
         });
 
-        if (!users) return null;
-
         return users;
     } catch (error) {
-        return reply.status(404).send({ error: "Users not found!" });
+        return reply.status(404).send({ error: "Users not found." });
     }
 }
 
