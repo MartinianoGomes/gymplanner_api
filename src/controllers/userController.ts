@@ -82,11 +82,9 @@ const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
             }
         });
 
-        if (!users) return null;
-
         return users;
     } catch (error) {
-        return reply.status(404).send({ error: "Users not found!" });
+        return reply.status(404).send({ error: "Users not found." });
     }
 }
 
