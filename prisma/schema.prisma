@@ -31,3 +31,11 @@ model Exercise {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime? @updatedAt
 }
+
+model GroupMuscle {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+}

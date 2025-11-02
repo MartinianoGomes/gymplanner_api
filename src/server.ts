@@ -9,6 +9,8 @@ import fastifyCookie from '@fastify/cookie';
 import { authRoutes } from "./routes/authRoutes.js";
 import { adminRoutes } from './routes/adminRoutes.js';
 import { globalRoutes } from "./routes/globalRoutes.js";
+import { groupMuscleRoutes } from './routes/groupMuscleRoutes.js';
+import { exerciseRoutes } from './routes/exerciseRoutes.js';
 
 const server = fastify({ logger: true })
 
@@ -34,8 +36,7 @@ server.register(fastifyJwt, {
 server.register(globalRoutes);
 server.register(authRoutes);
 server.register(adminRoutes, { prefix: '/admin' });
-
-import { exerciseRoutes } from "./routes/exerciseRoutes.js";
+server.register(groupMuscleRoutes, { prefix: '/groupMuscle' })
 server.register(exerciseRoutes, { prefix: '/exercise' });
 
 const port = Number(process.env.PORT) || 3000;
