@@ -1,19 +1,29 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import { prisma } from "../lib/prisma.js";
 import type { Workout } from "../types/workout.js";
+import { workoutSchema } from '../schemas/workoutSchema.js';
 
 const createWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
+  const validateWorkoutInformations = workoutSchema.safeParse(request.body as Workout);
+  if (!validateWorkoutInformations.success) return reply.status(400).send({ error: "Invalid workout informations." });
+
   try {
-    const { title, description = null } = request.body as Workout;
+    const { title, description } = validateWorkoutInformations.data;
 
     const workout = await prisma.workout.create({
       data: {
-        title,
-        description: description ?? null
+        title: title,
+        description: description
       }
     });
 
-    return reply.status(201).send(workout);
+    return {
+      id: workout.id,
+      title: workout.title,
+      description: workout.description,
+      createdAt: workout.createdAt,
+      updatedAt: workout.updatedAt
+    };
   } catch (error) {
     return reply.status(500).send({ error, message: "Unable to create workout." });
   }
@@ -22,16 +32,19 @@ const createWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
 const getAllWorkouts = async (_request: FastifyRequest, reply: FastifyReply) => {
   try {
     const workouts = await prisma.workout.findMany();
-    return reply.status(200).send(workouts);
+
+    return workouts;
   } catch (error) {
     return reply.status(500).send({ error, message: "Unable to fetch workouts." });
   }
 }
 
 const getWorkoutById = async (request: FastifyRequest, reply: FastifyReply) => {
-  try {
-    const { id } = request.params as { id: string };
+  const { id } = request.params as { id: string };
 
+  if (!id) return reply.status(400).send({ error: "Please provide the workout ID." })
+
+  try {
     const workout = await prisma.workout.findUnique({ where: { id } });
 
     if (!workout) return reply.status(404).send({ message: "Workout not found." });
@@ -43,29 +56,41 @@ const getWorkoutById = async (request: FastifyRequest, reply: FastifyReply) => {
 }
 
 const updateWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
+  const { id } = request.params as { id: string };
+  if (!id) return reply.status(400).send({ error: "Please provide workout ID." })
+
+  const validateWorkoutInformations = workoutSchema.partial().safeParse(request.body as Workout);
+  if (!validateWorkoutInformations.success) return reply.status(400).send({ error: "Invalid workout informations." })
+
+  const { title, description } = validateWorkoutInformations.data;
+
+  const updateData: {
+    title?: string;
+    description?: string;
+  } = {};
+
+  if (title) updateData.title = title;
+
+  if (description) updateData.description = description;
+
   try {
-    const { id } = request.params as { id: string };
-
-    const { title, description = null } = request.body as Workout;
-
     const updated = await prisma.workout.update({
       where: { id },
-      data: {
-        title,
-        description: description ?? null
-      }
+      data: updateData
     });
 
-    return reply.status(200).send(updated);
+    return updated;
   } catch (error) {
     return reply.status(404).send({ error, message: "Unable to update the workout. It may not exist." });
   }
 }
 
 const deleteWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
-  try {
-    const { id } = request.params as { id: string };
+  const { id } = request.params as { id: string };
 
+  if (!id) return reply.status(400).send({ error: "Please provide the workout ID." })
+
+  try {
     await prisma.workout.delete({ where: { id } });
 
     return reply.status(200).send({ message: "Workout deleted successfully!" });
