@@ -1,6 +1,6 @@
 import type { FastifyInstance, FastifyPluginOptions } from "fastify";
 
-async function globalRouter(fastify: FastifyInstance, options: FastifyPluginOptions) {
+async function globalRoutes(fastify: FastifyInstance, options: FastifyPluginOptions) {
     fastify.get('/', async (req, res) => {
         const data = {
             name: "GymPlanner API",
@@ -15,4 +15,4 @@ async function globalRouter(fastify: FastifyInstance, options: FastifyPluginOpti
     fastify.get('/ping', (req, res) => res.send({ pong: true }))
 }
 
-export { globalRouter }
+export { globalRoutes }
