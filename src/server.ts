@@ -7,14 +7,10 @@ import fastifyHelmet from "@fastify/helmet";
 import fastifyCookie from '@fastify/cookie';
 
 import { authRoutes } from "./routes/authRoutes.js";
-import { globalRoutes } from "./routes/globalRoutes.js";
 import { adminRoutes } from './routes/adminRoutes.js';
+import { globalRoutes } from "./routes/globalRoutes.js";
 
 const server = fastify({ logger: true })
-
-server.register(fastifyHelmet)
-server.register(fastifyCors)
-server.register(fastifyCookie);
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -23,7 +19,17 @@ if (!jwtSecret) {
     process.exit(1);
 }
 
-server.register(fastifyJwt, { secret: jwtSecret })
+server.register(fastifyHelmet)
+server.register(fastifyCors)
+server.register(fastifyCookie);
+
+server.register(fastifyJwt, {
+    secret: jwtSecret,
+    cookie: {
+        cookieName: 'token',
+        signed: false
+    }
+})
 
 server.register(globalRoutes);
 server.register(authRoutes);
