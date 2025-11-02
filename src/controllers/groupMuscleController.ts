@@ -4,10 +4,10 @@ import type { GroupMuscle } from "../types/groupMuscle.js";
 import { groupMuscleSchema } from '../schemas/groupMuscleSchemas.js';
 
 const createGroupMuscle = async (request: FastifyRequest, reply: FastifyReply) => {
-  try {
-    const validateGroupMuscleInformations = groupMuscleSchema.safeParse(request.body as GroupMuscle);
-    if (!validateGroupMuscleInformations.success) return reply.status(400).send({ error: "Invalid group muscle informations." });
+  const validateGroupMuscleInformations = groupMuscleSchema.safeParse(request.body as GroupMuscle);
+  if (!validateGroupMuscleInformations.success) return reply.status(400).send({ error: "Invalid group muscle informations." });
 
+  try {
     const { name, description } = request.body as GroupMuscle;
 
     const groupMuscle = await prisma.groupMuscle.create({
@@ -31,6 +31,8 @@ const createGroupMuscle = async (request: FastifyRequest, reply: FastifyReply) =
 
 const updateGroupMuscle = async (request: FastifyRequest, reply: FastifyReply) => {
   const { id } = request.params as { id: string };
+
+  if (!id) return reply.status(400).send({ error: "Please provide the muscle group ID." })
 
   const validateGroupMuscleInformations = groupMuscleSchema.partial().safeParse(request.body as GroupMuscle);
   if (!validateGroupMuscleInformations.success) return reply.status(400).send({ error: "Invalid group muscle informations." })
@@ -64,16 +66,21 @@ const getAllGroupMuscles = async (_request: FastifyRequest, reply: FastifyReply)
 
     return groupMuscles;
   } catch (error) {
-    return reply.status(404).send({ error, message: "Group muscles not found." });
+    return reply.status(500).send({ error, message: "Unable to fetch the group muscles." });
   }
 }
 
 const getGroupMuscleById = async (request: FastifyRequest, reply: FastifyReply) => {
+  const { id } = request.params as { id: string };
+
+  if (!id) return reply.status(400).send({ error: "Please provide the muscle group ID." })
+
   try {
-    const { id } = request.params as { id: string };
-    const gm = await prisma.groupMuscle.findUnique({ where: { id } });
-    if (!gm) return reply.status(404).send({ message: "Group muscle not found." });
-    return reply.status(200).send(gm);
+    const groupMuscle = await prisma.groupMuscle.findUnique({ where: { id } });
+
+    if (!groupMuscle) return reply.status(404).send({ message: "Group muscle not found." });
+
+    return reply.status(200).send(groupMuscle);
   } catch (error) {
     return reply.status(500).send({ error, message: "Unable to fetch group muscle." });
   }
@@ -82,7 +89,7 @@ const getGroupMuscleById = async (request: FastifyRequest, reply: FastifyReply) 
 const deleteGroupMuscle = async (request: FastifyRequest, reply: FastifyReply) => {
   const { id } = request.params as { id: string };
 
-  if (!id) return reply.status(404).send({ error: "Group muscle not found." })
+  if (!id) return reply.status(400).send({ error: "Please provide the muscle group ID." })
 
   try {
     await prisma.groupMuscle.delete({ where: { id } });
