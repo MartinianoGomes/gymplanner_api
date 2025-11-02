@@ -1,14 +1,14 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import { prisma } from "../lib/prisma.js";
 import type { GroupMuscle } from "../types/groupMuscle.js";
-import { groupMuscleSchema } from '../schemas/groupMuscleSchemas.js';
+import { groupMuscleSchema } from '../schemas/groupMuscleSchema.js';
 
 const createGroupMuscle = async (request: FastifyRequest, reply: FastifyReply) => {
   const validateGroupMuscleInformations = groupMuscleSchema.safeParse(request.body as GroupMuscle);
   if (!validateGroupMuscleInformations.success) return reply.status(400).send({ error: "Invalid group muscle informations." });
 
   try {
-    const { name, description } = request.body as GroupMuscle;
+    const { name, description } = validateGroupMuscleInformations.data;
 
     const groupMuscle = await prisma.groupMuscle.create({
       data: {
