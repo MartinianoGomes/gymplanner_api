@@ -45,14 +45,14 @@ Siga estes passos para configurar e executar o projeto localmente.
 ```bash
     git clone [https://github.com/MartinianoGomes/gymplanner-api.git](https://github.com/MartinianoGomes/gymplanner-api.git)
     cd gymplanner-api
-    ```
+```
 
 2.  Instale as dependências:
     
 
 ```bash
     npm install
-    ```
+```
 
 3.  Configure as variáveis de ambiente. Crie um arquivo `.env` na raíz do projeto, copiando o `.env.example` (se houver) ou adicionando as seguintes chaves:
     
@@ -63,21 +63,21 @@ Siga estes passos para configurar e executar o projeto localmente.
     
     # Segredo para assinatura do JWT
     JWT_SECRET="seu-segredo-super-secreto"
-    ```
+```
 
 4.  Sincronize o schema do Prisma com seu banco:
     
 
 ```bash
     npx prisma db push
-    ```
+```
 
 5.  Inicie o servidor de desenvolvimento:
     
 
 ```bash
     npm run dev
-    ```
+```
 
 6.  O servidor estará rodando em `http://localhost:3000`.
 
