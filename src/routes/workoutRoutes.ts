@@ -7,6 +7,7 @@ async function workoutRoutes(fastify: FastifyInstance, options: FastifyPluginOpt
     fastify.get('/:id', workoutController.getWorkoutById);
     fastify.patch('/update/:id', workoutController.updateWorkout);
     fastify.delete('/delete/:id', workoutController.deleteWorkout);
+    fastify.delete('/exercise/delete/:exerciseInWorkoutId', workoutController.excludeExerciseFromWorkout);
 }
 
 export { workoutRoutes };

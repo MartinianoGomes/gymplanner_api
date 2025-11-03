@@ -19,31 +19,49 @@ model User {
   email     String    @unique
   password  String
   role      String?   @default("user")
+  workouts  Workout[]
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 }
 
 model Workout {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  title              String
+  description        String?
+  day                Int
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime?            @updatedAt
+  userId             String               @db.ObjectId
+  user               User                 @relation(fields: [userId], references: [id])
+  ExercisesInWorkout ExercisesInWorkout[]
+}
+
+model ExercisesInWorkout {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  series     Int
+  reps       Int
+  workoutId  String   @db.ObjectId
+  workout    Workout  @relation(fields: [workoutId], references: [id])
+  exerciseId String   @db.ObjectId
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
 }
 
 model Exercise {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  description   String?
-  groupMuscleId String?   @db.ObjectId
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime? @updatedAt
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  description        String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime?            @updatedAt
+  groupMuscleId      String               @db.ObjectId
+  groupMuscle        GroupMuscle          @relation(fields: [groupMuscleId], references: [id])
+  ExercisesInWorkout ExercisesInWorkout[]
 }
 
 model GroupMuscle {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
+  exercises   Exercise[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
 }
