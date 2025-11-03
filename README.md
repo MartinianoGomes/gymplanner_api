@@ -2,8 +2,6 @@
 
 API central para o projeto GymPlanner. Este repositório contém toda a estrutura e o código do back-end, responsável pelo gerenciamento de usuários, treinos e exercícios.
 
-> **Status:** 🚧 Em Desenvolvimento 🚧
-
 ## ✨ Funcionalidades
 
 * **Autenticação:** Sistema de registro e login de usuários com JWT.
