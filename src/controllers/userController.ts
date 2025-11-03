@@ -25,12 +25,11 @@ const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
         }
     });
 
-    if (!user) return null;
-
     return {
         id: user.id,
         name: user.name,
         email: user.email,
+        role: user.role,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
     }
@@ -38,6 +37,8 @@ const createUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
 const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string }
+
+    if (!id) return reply.status(400).send({ error: "Please provide the user ID." })
 
     const validateUserInformations = userSchema.partial().safeParse(request.body as User);
     if (!validateUserInformations.success) return reply.status(400).send({ error: "Invalid user informations." })
@@ -62,9 +63,9 @@ const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
             data: updateData
         })
 
-        if (!userUpdated) return null;
+        const { password, ...userWithoutPassword } = userUpdated;
 
-        return userUpdated;
+        return userWithoutPassword;
     } catch (error) {
         return reply.status(404).send({ error: "User not found!" });
     }
@@ -72,20 +73,27 @@ const updateUser = async (request: FastifyRequest, reply: FastifyReply) => {
 
 const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
-        const users = await prisma.user.findMany();
+        const users = await prisma.user.findMany({
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                createdAt: true,
+                updatedAt: true
+            }
+        });
 
-        if (!users) return null;
-
-        return JSON.stringify(users);
+        return users;
     } catch (error) {
-        return reply.status(404).send({ error: "Users not found!" });
+        return reply.status(404).send({ error: "Users not found." });
     }
 }
 
 const deleteUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
 
-    if (!id) return null;
+    if (!id) return reply.status(404).send({ error: "User not found." });
 
     try {
         await prisma.user.delete({
@@ -107,7 +115,15 @@ const userLogin = async (request: FastifyRequest, reply: FastifyReply) => {
     const token = await login(request.server, email, password);
     if (!token) return reply.status(401).send({ error: "Incorrect credentials." });
 
-    return reply.status(200).send({ message: "User logged in successfully." });
+    return reply
+        .setCookie('token', token, {
+            path: '/',
+            httpOnly: true,
+            secure: true,
+            sameSite: 'lax'
+        })
+        .status(200)
+        .send({ message: "User logged in successfully." });
 }
 
 export { createUser, updateUser, getAllUsers, deleteUser, userLogin }

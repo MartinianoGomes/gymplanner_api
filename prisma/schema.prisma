@@ -18,13 +18,13 @@ model User {
   name      String
   email     String    @unique
   password  String
-  token     String?
-  treinos  Treino[]
+  role      String?   @default("user")
+  workouts  Workout[]
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 }
 
-enum Dia {
+enum Day {
   SEGUNDA
   TERCA
   QUARTA
@@ -34,36 +34,44 @@ enum Dia {
   DOMINGO
 }
 
-model Treino {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @db.ObjectId
-  user      User     @relation(fields: [userId], references: [id])
-  dia       Dia
-  exercicios ExerciciosEmTreino[]
+model Workout {
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  day                Day
+  title              String
+  description        String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime?            @updatedAt
+  userId             String               @db.ObjectId
+  user               User                 @relation(fields: [userId], references: [id])
+  ExercisesInWorkout ExercisesInWorkout[]
 }
 
-model ExerciciosEmTreino {
+model ExercisesInWorkout {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  TreinoId  String   @db.ObjectId
-  treino    Treino  @relation(fields: [TreinoId], references: [id])
-  exercicioId String   @db.ObjectId
-  exercicio   Exercicio @relation(fields: [exercicioId], references: [id])
   series     Int
-  repeticoes       Int
+  repeticoes Int
+  workoutId  String   @db.ObjectId
+  workout    Workout  @relation(fields: [workoutId], references: [id])
+  exerciseId String   @db.ObjectId
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
 }
 
-model Exercicio {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  grupoMuscularId String @db.ObjectId
-  grupoMuscular  GrupoMuscular @relation(fields: [grupoMuscularId], references: [id])
-  ExerciciosEmTreino ExerciciosEmTreino[]
+model Exercise {
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  description        String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime?            @updatedAt
+  groupMuscleId      String               @db.ObjectId
+  groupMuscle        GroupMuscle          @relation(fields: [groupMuscleId], references: [id])
+  ExercisesInWorkout ExercisesInWorkout[]
 }
 
-model GrupoMuscular {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId 
+model GroupMuscle {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
-  exercicios  Exercicio[]
+  description String?
+  exercises   Exercise[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
 }

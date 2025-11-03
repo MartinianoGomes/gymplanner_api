@@ -4,14 +4,16 @@ import fastify from "fastify";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCors from "@fastify/cors";
 import fastifyHelmet from "@fastify/helmet";
+import fastifyCookie from '@fastify/cookie';
 
-import { userRoutes } from "./routes/userRoutes.js";
-import { globalRouter } from "./routes/globalRoutes.js";
+import { authRoutes } from "./routes/authRoutes.js";
+import { adminRoutes } from './routes/adminRoutes.js';
+import { globalRoutes } from "./routes/globalRoutes.js";
+import { groupMuscleRoutes } from './routes/groupMuscleRoutes.js';
+import { exerciseRoutes } from './routes/exerciseRoutes.js';
+import { workoutRoutes } from './routes/workoutRoutes.js';
 
 const server = fastify({ logger: true })
-
-server.register(fastifyHelmet)
-server.register(fastifyCors)
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -20,10 +22,24 @@ if (!jwtSecret) {
     process.exit(1);
 }
 
-server.register(fastifyJwt, { secret: jwtSecret })
+server.register(fastifyHelmet)
+server.register(fastifyCors)
+server.register(fastifyCookie);
 
-server.register(globalRouter);
-server.register(userRoutes, { prefix: '/user' });
+server.register(fastifyJwt, {
+    secret: jwtSecret,
+    cookie: {
+        cookieName: 'token',
+        signed: false
+    }
+})
+
+server.register(globalRoutes);
+server.register(authRoutes);
+server.register(adminRoutes, { prefix: '/admin' });
+server.register(groupMuscleRoutes, { prefix: '/groupMuscle' })
+server.register(exerciseRoutes, { prefix: '/exercise' });
+server.register(workoutRoutes, { prefix: '/workout' });
 
 const port = Number(process.env.PORT) || 3000;
 
