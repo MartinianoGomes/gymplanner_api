@@ -1,0 +1,660 @@
+type: collection.insomnia.rest/5.0
+name: GymPlanner API
+meta:
+  id: wrk_e53e2dd3f2d047298fddfa7b437d364c
+  created: 1760325113506
+  modified: 1760325113506
+  description: ""
+collection:
+  - name: authRoutes
+    meta:
+      id: fld_87c1aff79a6d4350b76fd2803252521e
+      created: 1762048626792
+      modified: 1762048626792
+      sortKey: -1762048626792
+      description: ""
+    children:
+      - url: http://localhost:3000/register
+        name: register
+        meta:
+          id: req_0952f8f961d14256af1745ca549a36de
+          created: 1760325119927
+          modified: 1762048641225
+          isPrivate: false
+          description: ""
+          sortKey: -1762048631831
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Martiniano Gomes",
+            	"email": "martinianogomes@gmail.com",
+            	"password": "12345678910"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/login
+        name: login
+        meta:
+          id: req_54c1418c162b44f790a0af574007a83e
+          created: 1761882294632
+          modified: 1762048636514
+          isPrivate: false
+          description: ""
+          sortKey: -1762048631931
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"email": "martinianogomes@gmail.com",
+            	"password": "12345678910"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: globalRoutes
+    meta:
+      id: fld_677834dde12848d18d90919d2f8df3ec
+      created: 1762048652449
+      modified: 1762048652449
+      sortKey: -1762048652449
+      description: ""
+    children:
+      - url: http://localhost:3000/
+        name: endPoint
+        meta:
+          id: req_b269ead690f34f5ab242994dbdf2cc48
+          created: 1760325495787
+          modified: 1762048685054
+          isPrivate: false
+          description: ""
+          sortKey: -1762048672481
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/ping
+        name: ping
+        meta:
+          id: req_3d869d0e5f0c4da0943b67051c06b58a
+          created: 1761343141842
+          modified: 1762048676461
+          isPrivate: false
+          description: ""
+          sortKey: -1762048672381
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: adminRoutes
+    meta:
+      id: fld_8f08ced32a354a79be673ef98a74cfdb
+      created: 1762048693688
+      modified: 1762048693688
+      sortKey: -1762048693688
+      description: ""
+    children:
+      - url: http://localhost:3000/admin/
+        name: getAllUsers
+        meta:
+          id: req_cf61ba85facc47aba0d91f2f45691f89
+          created: 1761882384258
+          modified: 1762048706256
+          isPrivate: false
+          description: ""
+          sortKey: -1762048697971
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/admin/delete/68ff8d4800c06f07de12aa08
+        name: deleteUser
+        meta:
+          id: req_32227b4aea584b339ff0f51c614635e8
+          created: 1762048384183
+          modified: 1762048700475
+          isPrivate: false
+          description: ""
+          sortKey: -1762048698071
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/admin/update/6903acd7ae2f262a5629bfa8
+        name: updateUser
+        meta:
+          id: req_1bb6c42a161d4484b702929f91e786e7
+          created: 1762048435458
+          modified: 1762111026172
+          isPrivate: false
+          description: ""
+          sortKey: -1762048698171
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Guloso da Malária"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: groupMuscleRoutes
+    meta:
+      id: fld_eaaafc83a3404f97a14db95e3106af08
+      created: 1762110356732
+      modified: 1762115350139
+      sortKey: -1762110356733
+      description: ""
+    children:
+      - url: "{{ _.BASE_URL.base_url }}groupMuscle"
+        name: getAllGroupMuscles
+        meta:
+          id: req_36841a1521f746c185114f67920139ad
+          created: 1762110359162
+          modified: 1762112805603
+          isPrivate: false
+          description: ""
+          sortKey: -1762110359162
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/groupMuscle/create
+        name: createGroupMuscle
+        meta:
+          id: req_0b719fc107024229900c76f9cde48585
+          created: 1762111089485
+          modified: 1762112539116
+          isPrivate: false
+          description: ""
+          sortKey: -1762111089485
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            {
+            	"name": "Cosstas",
+            	"description": "Grupo muscular que envolve os músculos tal tal tal."
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/groupMuscle/update/6907b0e83ebfdfc86afddc56
+        name: updateGroupMuscle
+        meta:
+          id: req_812a5835921c434a8687432bfce64670
+          created: 1762111208751
+          modified: 1762111936287
+          isPrivate: false
+          description: ""
+          sortKey: -1762111208751
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Costas"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/groupMuscle/delete/6907b0e83ebfdfc86afddc56
+        name: deleteGroupMuscle
+        meta:
+          id: req_7930ab2a90ab47709f1b5bb343bd19de
+          created: 1762111647002
+          modified: 1762111950577
+          isPrivate: false
+          description: ""
+          sortKey: -1762111647002
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/groupMuscle/6907b1de3ebfdfc86afddc57
+        name: getGroupMuscleById
+        meta:
+          id: req_33b05fb3aefe4e309aa4866c91bc4962
+          created: 1762111727020
+          modified: 1762111972224
+          isPrivate: false
+          description: ""
+          sortKey: -1762111727020
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: exerciseRoutes
+    meta:
+      id: fld_9487811c44a845759ac56993d77f9d93
+      created: 1762115068416
+      modified: 1762115912506
+      sortKey: -1762115068416
+      description: ""
+    children:
+      - url: "{{ _.BASE_URL.base_url }}exercise/6907bf2048599afb85b2d32f"
+        name: getExerciseById
+        meta:
+          id: req_36624a9913c14330af0675382ede125e
+          created: 1762115071902
+          modified: 1762115737258
+          isPrivate: false
+          description: ""
+          sortKey: -1762115301568
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL.base_url }}exercise/create"
+        name: createExercise
+        meta:
+          id: req_c3485221052c4c30815468d670feb68d
+          created: 1762115164491
+          modified: 1762137811824
+          isPrivate: false
+          description: ""
+          sortKey: -1762115164491
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Doideira",
+            	"description": "dawdsaujbnjwldnad",
+            	"groupMuscleId": "6907b1de3ebfdfc86afddc57"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL.base_url }}exercise/update/6907bf2048599afb85b2d32f"
+        name: updateExercise
+        meta:
+          id: req_58cc91d48ef048299f883abb32310ce5
+          created: 1762115438645
+          modified: 1762115512294
+          isPrivate: false
+          description: ""
+          sortKey: -1762115438645
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Polia na Tora"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL.base_url }}exercise/delete/6907bf2048599afb85b2d32f"
+        name: deleteExercise
+        meta:
+          id: req_419f2c55a3a54eb1af02ec733d22f682
+          created: 1762115611045
+          modified: 1762115633209
+          isPrivate: false
+          description: ""
+          sortKey: -1762115611045
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL.base_url }}exercise/"
+        name: getAllExercises
+        meta:
+          id: req_3875d8aeafb944fdaa58595d38ea63a0
+          created: 1762115681826
+          modified: 1762115735627
+          isPrivate: false
+          description: ""
+          sortKey: -1762115071802
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: workoutRoutes
+    meta:
+      id: fld_dfee423844234be28f3a666f9e9f3741
+      created: 1762117739450
+      modified: 1762117739450
+      sortKey: -1762117739450
+      description: ""
+    children:
+      - url: "{{ _.BASE_URL.base_url }}workout/"
+        name: getAllWorkout
+        meta:
+          id: req_d24125a756994413b467aedf80069b77
+          created: 1762117742011
+          modified: 1762137639298
+          isPrivate: false
+          description: ""
+          sortKey: -1762117742011
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL.base_url }}workout/create"
+        name: createWorkout
+        meta:
+          id: req_da4a0bd9712140f5bff783a809efe313
+          created: 1762117864871
+          modified: 1762144050773
+          isPrivate: false
+          description: ""
+          sortKey: -1762117864871
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            {
+              "title": "Treino de Força",
+              "description": "Treino focado em aumento de força para membros superiores",
+              "day": 1,
+              "userId": "6907ab5f2f9a0c9f6b6a3a6e",
+              "exercisesInWorkout": [
+                {
+                  "series": 4,
+                  "reps": 8,
+                  "exerciseId": "6907c09345997b646654a910"
+                },
+                {
+                  "series": 3,
+                  "reps": 10,
+                  "exerciseId": "690816d5ee6a99c89689a8ec"
+                }
+              ]
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL.base_url }}workout/69081b929722b3fdae265834"
+        name: getWorkoutById
+        meta:
+          id: req_1227525aa0af4b42b3968ae77b523875
+          created: 1762118151557
+          modified: 1762139093016
+          isPrivate: false
+          description: ""
+          sortKey: -1762118151557
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL.base_url }}workout/update/6907c9f9dbd92c28da3cd8eb"
+        name: updateWorkout
+        meta:
+          id: req_a677f42b6d414baeba7da500b06ba91b
+          created: 1762118209562
+          modified: 1762137787157
+          isPrivate: false
+          description: ""
+          sortKey: -1762118209562
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"title": "Treino de Terça"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL.base_url }}workout/delete/6907c9f9dbd92c28da3cd8eb"
+        name: deleteWorkout
+        meta:
+          id: req_7810c2e523b34b2d9d3ec0cdcbfc507e
+          created: 1762118293112
+          modified: 1762118324731
+          isPrivate: false
+          description: ""
+          sortKey: -1762118293112
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.BASE_URL.base_url }}workout/delete/exercise/69081b929722b3fdae265835"
+        name: deleteExerciseFromWorkout
+        meta:
+          id: req_82100d1b0f7e4c7a9db1ae373f1ca1ce
+          created: 1762142835057
+          modified: 1762143238671
+          isPrivate: false
+          description: ""
+          sortKey: -1762142835057
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_9d9baa11419cda0a02232eaa77c4640d3ebe3c4b
+    created: 1760325113509
+    modified: 1762110330808
+  cookies:
+    - key: token
+      value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTA3YWI1ZjJmOWEwYzlmNmI2YTNhNmUiLCJlbWFpbCI6Im1hcnRpbmlhbm9nb21lc0BnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJqdGkiOiIyYTkwMWJiNS04MTlkLTRiNGQtYjAzYy1iYjI4ODYyNWUzYTUiLCJzdWIiOiI2OTA3YWI1ZjJmOWEwYzlmNmI2YTNhNmUiLCJpYXQiOjE3NjIxMTAzMzAsImV4cCI6MTc2MjE5NjczMH0.rnrq1-Gsyd8xWoz33GPjJP4g7pr3ZQ6KKBb9Z7KNlCY
+      domain: localhost
+      path: /
+      secure: true
+      httpOnly: true
+      hostOnly: true
+      creation: 2025-11-01T20:50:51.222Z
+      lastAccessed: 2025-11-02T19:05:30.808Z
+      sameSite: lax
+      id: 2ec2bad7-f02f-4f8e-9bae-d18cb615b21d
+environments:
+  name: Base Environment
+  meta:
+    id: env_9d9baa11419cda0a02232eaa77c4640d3ebe3c4b
+    created: 1760325113508
+    modified: 1762112719282
+    isPrivate: false
+  data:
+    BASE_URL:
+      base_url: http://localhost:3000/

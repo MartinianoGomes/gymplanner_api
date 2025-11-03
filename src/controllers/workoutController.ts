@@ -102,20 +102,6 @@ const updateWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
   if (description) updateData.description = description;
   if (day) updateData.day = day;
 
-  // if (exercisesInWorkout) {
-  //   updateData.ExercisesInWorkout = {
-  //     deleteMany: {},
-
-  //     create: exercisesInWorkout.map(ex => ({
-  //       series: ex.series,
-  //       reps: ex.reps,
-  //       exercise: {
-  //         connect: { id: ex.exerciseId }
-  //       }
-  //     }))
-  //   };
-  // }
-
   try {
     const updated = await prisma.workout.update({
       where: { id },
@@ -142,7 +128,7 @@ const deleteWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
   }
 }
 
-const deleteExerciseFromWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
+const excludeExerciseFromWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
   const { exerciseInWorkoutId } = request.params as { exerciseInWorkoutId: string };
 
   if (!exerciseInWorkoutId) {
@@ -160,4 +146,4 @@ const deleteExerciseFromWorkout = async (request: FastifyRequest, reply: Fastify
   }
 };
 
-export { createWorkout, getAllWorkouts, getWorkoutById, updateWorkout, deleteWorkout, deleteExerciseFromWorkout }
+export { createWorkout, getAllWorkouts, getWorkoutById, updateWorkout, deleteWorkout, excludeExerciseFromWorkout }
