@@ -1,0 +1,527 @@
+openapi: "3.0.0"
+info:
+  title: "GymPlanner API"
+  description: "API para o aplicativo GymPlanner, gerenciando usuários, exercícios e treinos."
+  version: "1.0.0"
+servers:
+  - url: "http://localhost:3000"
+    description: "Servidor de desenvolvimento local"
+
+# 1. Definição das Tags (grupos de rotas)
+tags:
+  - name: authRoutes
+    description: "Autenticação de usuários (login/register)"
+  - name: globalRoutes
+    description: "Rotas globais e de verificação de saúde"
+  - name: adminRoutes
+    description: "Gerenciamento de usuários (Admin)"
+  - name: groupMuscleRoutes
+    description: "Gerenciamento de grupos musculares"
+  - name: exerciseRoutes
+    description: "Gerenciamento de exercícios"
+  - name: workoutRoutes
+    description: "Gerenciamento de treinos e seus exercícios"
+
+# 2. Definição das Rotas (Paths)
+paths:
+
+  # --- globalRoutes ---
+  /:
+    get:
+      tags:
+        - globalRoutes
+      summary: "Endpoint Raiz"
+      description: "Verifica se a API está online."
+      responses:
+        "200":
+          description: "API funcionando."
+  /ping:
+    get:
+      tags:
+        - globalRoutes
+      summary: "Ping"
+      description: "Retorna 'pong' para verificação de saúde."
+      responses:
+        "200":
+          description: "Retorna 'pong'."
+
+  # --- authRoutes ---
+  /register:
+    post:
+      tags:
+        - authRoutes
+      summary: "Registrar Novo Usuário"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterBody"
+            example:
+              name: "Martiniano Gomes"
+              email: "martinianogomes@gmail.com"
+              password: "12345678910"
+      responses:
+        "201":
+          description: "Usuário criado com sucesso."
+        "400":
+          description: "Informações inválidas."
+  /login:
+    post:
+      tags:
+        - authRoutes
+      summary: "Login de Usuário"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginBody"
+            example:
+              email: "martinianogomes@gmail.com"
+              password: "12345678910"
+      responses:
+        "200":
+          description: "Login bem-sucedido (geralmente retorna um token)."
+        "401":
+          description: "Credenciais inválidas."
+
+  # --- adminRoutes ---
+  /admin/:
+    get:
+      tags:
+        - adminRoutes
+      summary: "Listar Todos os Usuários (Admin)"
+      responses:
+        "200":
+          description: "Lista de usuários."
+  /admin/delete/{id}:
+    delete:
+      tags:
+        - adminRoutes
+      summary: "Deletar Usuário (Admin)"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          description: "ID do usuário a ser deletado"
+      responses:
+        "200":
+          description: "Usuário deletado."
+        "404":
+          description: "Usuário não encontrado."
+  /admin/update/{id}:
+    patch:
+      tags:
+        - adminRoutes
+      summary: "Atualizar Usuário (Admin)"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          description: "ID do usuário a ser atualizado"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserBody"
+            example:
+              name: "Novo Nome"
+      responses:
+        "200":
+          description: "Usuário atualizado."
+        "404":
+          description: "Usuário não encontrado."
+
+  # --- groupMuscleRoutes ---
+  /groupMuscle:
+    get:
+      tags:
+        - groupMuscleRoutes
+      summary: "Listar Todos os Grupos Musculares"
+      responses:
+        "200":
+          description: "Lista de grupos musculares."
+  /groupMuscle/create:
+    post:
+      tags:
+        - groupMuscleRoutes
+      summary: "Criar Novo Grupo Muscular"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGroupMuscleBody"
+            example:
+              name: "Costas"
+              description: "Grupo muscular das costas."
+      responses:
+        "201":
+          description: "Grupo muscular criado."
+  /groupMuscle/update/{id}:
+    patch:
+      tags:
+        - groupMuscleRoutes
+      summary: "Atualizar Grupo Muscular"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateGroupMuscleBody"
+            example:
+              name: "Costas (Atualizado)"
+      responses:
+        "200":
+          description: "Grupo muscular atualizado."
+        "404":
+          description: "Grupo muscular não encontrado."
+  /groupMuscle/delete/{id}:
+    delete:
+      tags:
+        - groupMuscleRoutes
+      summary: "Deletar Grupo Muscular"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Grupo muscular deletado."
+        "404":
+          description: "Grupo muscular não encontrado."
+  /groupMuscle/{id}:
+    get:
+      tags:
+        - groupMuscleRoutes
+      summary: "Buscar Grupo Muscular por ID"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Detalhes do grupo muscular."
+        "404":
+          description: "Grupo muscular não encontrado."
+
+  # --- exerciseRoutes ---
+  /exercise/:
+    get:
+      tags:
+        - exerciseRoutes
+      summary: "Listar Todos os Exercícios"
+      responses:
+        "200":
+          description: "Lista de exercícios."
+  /exercise/create:
+    post:
+      tags:
+        - exerciseRoutes
+      summary: "Criar Novo Exercício"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateExerciseBody"
+            example:
+              name: "Supino Reto"
+              description: "Exercício para peitoral."
+              groupMuscleId: "6907b1de3ebfdfc86afddc57"
+      responses:
+        "201":
+          description: "Exercício criado."
+  /exercise/update/{id}:
+    patch:
+      tags:
+        - exerciseRoutes
+      summary: "Atualizar Exercício"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateExerciseBody"
+            example:
+              name: "Supino Inclinado"
+      responses:
+        "200":
+          description: "Exercício atualizado."
+        "404":
+          description: "Exercício não encontrado."
+  /exercise/delete/{id}:
+    delete:
+      tags:
+        - exerciseRoutes
+      summary: "Deletar Exercício"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Exercício deletado."
+        "404":
+          description: "Exercício não encontrado."
+  /exercise/{id}:
+    get:
+      tags:
+        - exerciseRoutes
+      summary: "Buscar Exercício por ID"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Detalhes do exercício."
+        "404":
+          description: "Exercício não encontrado."
+
+  # --- workoutRoutes ---
+  /workout/:
+    get:
+      tags:
+        - workoutRoutes
+      summary: "Listar Todos os Treinos"
+      responses:
+        "200":
+          description: "Lista de treinos."
+  /workout/create:
+    post:
+      tags:
+        - workoutRoutes
+      summary: "Criar Novo Treino"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateWorkoutBody"
+      responses:
+        "201":
+          description: "Treino criado."
+  /workout/{id}:
+    get:
+      tags:
+        - workoutRoutes
+      summary: "Buscar Treino por ID"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Detalhes do treino."
+        "404":
+          description: "Treino não encontrado."
+  /workout/update/{id}:
+    patch:
+      tags:
+        - workoutRoutes
+      summary: "Atualizar Informações do Treino"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateWorkoutBody"
+            example:
+              title: "Treino de Terça (Modificado)"
+      responses:
+        "200":
+          description: "Treino atualizado."
+        "404":
+          description: "Treino não encontrado."
+  /workout/delete/{id}:
+    delete:
+      tags:
+        - workoutRoutes
+      summary: "Deletar Treino"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Treino deletado."
+        "404":
+          description: "Treino não encontrado."
+  
+  /workout/exercise/add/{workoutId}:
+    post:
+      tags:
+        - workoutRoutes
+      summary: "Adicionar Exercício a um Treino"
+      parameters:
+        - name: "workoutId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          description: "ID do treino que receberá o exercício"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddExerciseToWorkoutBody"
+            example:
+              exerciseId: "690816d5ee6a99c89689a8ec"
+              series: 3
+              reps: 12
+      responses:
+        "201":
+          description: "Exercício adicionado ao treino."
+        "404":
+          description: "Treino ou exercício não encontrado."
+  /workout/exercise/delete/{exerciseInWorkoutId}:
+    delete:
+      tags:
+        - workoutRoutes
+      summary: "Remover Exercício de um Treino"
+      parameters:
+        - name: "exerciseInWorkoutId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          description: "ID da *relação* (ExercisesInWorkout) a ser removida"
+      responses:
+        "200":
+          description: "Exercício removido do treino."
+        "404":
+          description: "Relação não encontrada."
+
+# 3. Definição dos Schemas (Modelos de Dados)
+components:
+  schemas:
+    RegisterBody:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        email:
+          type: "string"
+          format: "email"
+        password:
+          type: "string"
+          format: "password"
+    LoginBody:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+          format: "email"
+        password:
+          type: "string"
+          format: "password"
+    UpdateUserBody:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+    CreateGroupMuscleBody:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+    UpdateGroupMuscleBody:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+    CreateExerciseBody:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+        groupMuscleId:
+          type: "string"
+    UpdateExerciseBody:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+    CreateWorkoutBody:
+      type: "object"
+      properties:
+        title:
+          type: "string"
+        description:
+          type: "string"
+        day:
+          type: "integer"
+          example: 1
+        userId:
+          type: "string"
+        exercisesInWorkout:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              series:
+                type: "integer"
+              reps:
+                type: "integer"
+              exerciseId:
+                type: "string"
+    UpdateWorkoutBody:
+      type: "object"
+      properties:
+        title:
+          type: "string"
+        description:
+          type: "string"
+        day:
+          type: "integer"
+    AddExerciseToWorkoutBody:
+      type: "object"
+      properties:
+        exerciseId:
+          type: "string"
+        series:
+          type: "integer"
+        reps:
+          type: "integer"
