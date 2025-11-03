@@ -43,7 +43,7 @@ Siga estes passos para configurar e executar o projeto localmente.
     
 
 ```bash
-    git clone [https://github.com/MartinianoGomes/gymplanner-api.git](https://github.com/MartinianoGomes/gymplanner-api.git)
+    git clone https://github.com/MartinianoGomes/gymplanner-api.git
     cd gymplanner-api
 ```
 
