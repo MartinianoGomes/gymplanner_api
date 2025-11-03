@@ -93,9 +93,3 @@ A API está documentada usando OpenAPI (Swagger). Após iniciar o servidor, a do
 * [@correasouza](https://github.com/correasouza)
 * [@lucassmotta](https://github.com/lucassmotta)
 * [@Michelangelo-Costa](https://github.com/Michelangelo-Costa)
-
----
-
-## 📄 Licença
-
-Este projeto é distribuído sob a licença MIT.
