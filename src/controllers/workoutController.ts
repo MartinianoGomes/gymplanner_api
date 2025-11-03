@@ -2,6 +2,7 @@ import type { FastifyRequest, FastifyReply } from 'fastify';
 import { prisma } from "../lib/prisma.js";
 import type { Workout } from "../types/workout.js";
 import { workoutSchema } from '../schemas/workoutSchema.js';
+import { addExercise, removeExercise } from '../services/workoutService.js';
 
 const createWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
   const validateWorkoutInformations = workoutSchema.safeParse(request.body as Workout);
@@ -128,6 +129,28 @@ const deleteWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
   }
 }
 
+const addExerciseToWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
+  const { workoutId } = request.params as { workoutId: string };
+  const { exerciseId, series, reps } = request.body as { exerciseId: string, series: number, reps: number };
+
+  if (!workoutId || !exerciseId) {
+    return reply.status(400).send({ error: "Workout ID and Exercise ID must be provided." });
+  }
+
+  try {
+    const exerciseInWorkout = await addExercise({
+      workoutId,
+      exerciseId,
+      series,
+      reps
+    });
+
+    return exerciseInWorkout;
+  } catch (error) {
+    return reply.status(500).send({ error, message: "Unable to add exercise to workout." });
+  }
+};
+
 const excludeExerciseFromWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
   const { exerciseInWorkoutId } = request.params as { exerciseInWorkoutId: string };
 
@@ -146,4 +169,4 @@ const excludeExerciseFromWorkout = async (request: FastifyRequest, reply: Fastif
   }
 };
 
-export { createWorkout, getAllWorkouts, getWorkoutById, updateWorkout, deleteWorkout, excludeExerciseFromWorkout }
+export { createWorkout, getAllWorkouts, getWorkoutById, updateWorkout, deleteWorkout, excludeExerciseFromWorkout, addExerciseToWorkout }
