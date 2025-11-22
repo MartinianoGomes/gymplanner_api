@@ -1,13 +1,11 @@
-# Formato: mongodb+srv://<USER>:<PASSWORD>@<CLUSTER_URL>/<DATABASE_NAME>?<OPTIONS>
+# URL do banco de dados - fixo.
+DATABASE_URL="mongodb+srv://admin:admin@gymplannerdb.vqr7fhe.mongodb.net/GymPlannerDB?retryWrites=true&w=majority"
 
-# <USER>: Seu nome de usuário no MongoDB Atlas.
+# Chave secreta para JWT
+JWT_SECRET="gymplanner"
 
-# <PASSWORD>: A senha para esse usuário.
+# Define o ambiente. Use "development" (desenvolvimento) ou "production" (produção)
+NODE_ENV="development"
 
-# <CLUSTER_URL>: O endereço do seu cluster (ex: cluster0.abcde.mongodb.net).
-
-# <DATABASE_NAME>: O nome do banco de dados que você quer criar (ex: "meu-projeto-dev"). O MongoDB/Prisma o criará automaticamente na primeira escrita.
-
-DATABASE_URL="mongodb+srv://root:randompassword@cluster0.ab1cd.mongodb.net/mydb?retryWrites=true&w=majority"
-
-JWT_SECRET="yoursecret"
+# Porta em que o servidor irá rodar
+PORT=3000
