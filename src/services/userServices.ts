@@ -32,4 +32,15 @@ const login = async (
     return token;
 }
 
-export { login };
+const logout = async (reply: FastifyReply) => {
+    reply.clearCookie('token', {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax'
+    });
+    
+    return true;
+}
+
+export { login, logout };
