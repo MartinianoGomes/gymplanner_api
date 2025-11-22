@@ -52,7 +52,7 @@ Siga estes passos para configurar e executar o projeto localmente.
     npm install
 ```
 
-3.  Configure as variáveis de ambiente. Crie um arquivo `.env` na raíz do projeto, copiando o `.env.example` (se houver) ou adicionando as seguintes chaves:
+3.  Configure as variáveis de ambiente. Crie um arquivo `.env` na raíz do projeto, copiando o `.env.example` ou adicionando as seguintes chaves:
     
 
 ```env
@@ -61,23 +61,45 @@ Siga estes passos para configurar e executar o projeto localmente.
     
     # Segredo para assinatura do JWT
     JWT_SECRET="seu-segredo-super-secreto"
+    
+    # Define o ambiente (development ou production)
+    NODE_ENV="development"
+    
+    # Porta em que o servidor irá rodar
+    PORT=3000
 ```
 
-4.  Sincronize o schema do Prisma com seu banco:
+4.  Gere o cliente Prisma:
     
 
 ```bash
-    npx prisma db push
+    npm run generate
 ```
 
-5.  Inicie o servidor de desenvolvimento:
+5.  Sincronize o schema do Prisma com seu banco:
+    
+
+```bash
+    npm run push
+```
+
+6.  Inicie o servidor de desenvolvimento:
     
 
 ```bash
     npm run dev
 ```
 
-6.  O servidor estará rodando em `http://localhost:3000`.
+7.  O servidor estará rodando em `http://localhost:3000`.
+
+---
+
+## 📝 Scripts Disponíveis
+
+* `npm run dev` - Inicia o servidor de desenvolvimento com hot reload (usando tsx)
+* `npm run generate` - Gera o cliente Prisma baseado no schema
+* `npm run push` - Sincroniza o schema do Prisma com o banco de dados
+* `npm test` - Executa os testes (ainda não implementado)
 
 ---
 
