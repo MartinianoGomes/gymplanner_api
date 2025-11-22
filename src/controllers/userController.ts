@@ -2,7 +2,7 @@ import { type FastifyRequest, type FastifyReply, fastify } from 'fastify';
 import { prisma } from "../lib/prisma.js";
 import type { User } from "../types/user.js";
 import { hash } from "bcryptjs";
-import { login } from '../services/userServices.js';
+import { login, logout } from '../services/userServices.js';
 import { loginSchema } from '../schemas/loginSchema.js';
 import { userSchema } from '../schemas/userSchema.js';
 
@@ -126,4 +126,13 @@ const userLogin = async (request: FastifyRequest, reply: FastifyReply) => {
         .send({ message: "User logged in successfully." });
 }
 
-export { createUser, updateUser, getAllUsers, deleteUser, userLogin }
+const userLogout = async (request: FastifyRequest, reply: FastifyReply) => {
+    const token = request.cookies.token;
+    if (!token) return reply.status(401).send({ error: "User not logged in." });
+
+    await logout(reply);
+
+    return reply.status(200).send({ message: "User logged out successfully." });
+}
+
+export { createUser, updateUser, getAllUsers, deleteUser, userLogin, userLogout }
