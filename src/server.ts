@@ -62,7 +62,7 @@ server.register(fastifyJwt, {
 server.register(globalRoutes);
 server.register(authRoutes);
 server.register(adminRoutes, { prefix: '/admin' });
-server.register(groupMuscleRoutes, { prefix: '/groupMuscle' })
+server.register(groupMuscleRoutes, { prefix: '/groupMuscle' });
 server.register(exerciseRoutes, { prefix: '/exercise' });
 server.register(workoutRoutes, { prefix: '/workout' });
 
