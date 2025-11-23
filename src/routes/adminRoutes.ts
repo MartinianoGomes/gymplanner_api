@@ -1,11 +1,12 @@
 import type { FastifyInstance } from "fastify";
-import { verifyAdmin } from "../hooks/authHooks.js";
-import * as userController from "../controllers/userController.js";
+import { verifyJwt, verifyRole } from "../hooks/authHooks.js";
+import * as adminController from "../controllers/adminController.js"
 import * as exerciseController from "../controllers/exerciseController.js";
 import * as groupMuscleController from "../controllers/groupMuscleController.js"
 
 export async function adminRoutes(fastify: FastifyInstance) {
-    fastify.addHook("onRequest", verifyAdmin);
+    fastify.addHook("onRequest", verifyJwt);
+    fastify.addHook("onRequest", verifyRole("ADMIN"));
 
     fastify.register(adminUserModule, { prefix: "/gymplanner/admin" });
     fastify.register(adminExerciseModule, { prefix: "/gymplanner/admin" });
@@ -13,9 +14,9 @@ export async function adminRoutes(fastify: FastifyInstance) {
 }
 
 async function adminUserModule(fastify: FastifyInstance) {
-    fastify.delete("/user/delete/:id", userController.deleteUser);
-    fastify.patch("/user/update/:id", userController.updateUser);
-    fastify.get("/user", userController.getAllUsers);
+    fastify.delete("/user/delete/:id", adminController.deleteUser);
+    fastify.patch("/user/update/:id", adminController.updateUser);
+    fastify.get("/user", adminController.getAllUsers);
 }
 
 async function adminExerciseModule(fastify: FastifyInstance) {

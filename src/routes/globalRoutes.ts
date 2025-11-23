@@ -5,7 +5,7 @@ export async function globalRoutes(fastify: FastifyInstance, options: FastifyPlu
 }
 
 async function globalModule(app: FastifyInstance) {
-    app.get("/api", async () => {
+    app.get("/", async () => {
         return {
             name: "GymPlanner API",
             version: "1.0.0",
@@ -14,5 +14,5 @@ async function globalModule(app: FastifyInstance) {
         };
     });
 
-    app.get("/api/ping", () => ({ pong: true }));
+    app.get("/ping", () => ({ pong: true }));
 }
