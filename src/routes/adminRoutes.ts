@@ -8,9 +8,9 @@ export async function adminRoutes(fastify: FastifyInstance) {
     fastify.addHook("onRequest", verifyJwt);
     fastify.addHook("onRequest", verifyRole("ADMIN"));
 
-    fastify.register(adminUserModule, { prefix: "/gymplanner/admin" });
-    fastify.register(adminExerciseModule, { prefix: "/gymplanner/admin" });
-    fastify.register(adminGroupMuscleModule, { prefix: "/gymplanner/admin" });
+    fastify.register(adminUserModule, { prefix: "/admin" });
+    fastify.register(adminExerciseModule, { prefix: "/admin" });
+    fastify.register(adminGroupMuscleModule, { prefix: "/admin" });
 }
 
 async function adminUserModule(fastify: FastifyInstance) {

@@ -1,7 +1,7 @@
 import type { FastifyInstance, FastifyPluginOptions } from "fastify";
 
 export async function globalRoutes(fastify: FastifyInstance, options: FastifyPluginOptions) {
-    fastify.register(globalModule, { prefix: "/gymplanner" });
+    fastify.register(globalModule);
 }
 
 async function globalModule(app: FastifyInstance) {

@@ -3,7 +3,7 @@ import { verifyJwt } from "../hooks/authHooks.js";
 import * as userController from "../controllers/userController.js";
 
 async function userRoutes(fastify: FastifyInstance) {
-    fastify.register(userModule, { prefix: "/gymplanner" });
+    fastify.register(userModule);
 }
 
 async function userModule(app: FastifyInstance) {

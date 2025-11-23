@@ -2,7 +2,7 @@ import type { FastifyInstance, FastifyPluginOptions } from "fastify";
 import * as groupMuscleController from "../controllers/groupMuscleController.js";
 
 export async function groupMuscleRoutes(fastify: FastifyInstance) {
-    fastify.register(groupMuscleModule, { prefix: "/gymplanner/groupMuscle" });
+    fastify.register(groupMuscleModule, { prefix: "/groupMuscle" });
 }
 
 async function groupMuscleModule(fastify: FastifyInstance, options: FastifyPluginOptions) {
