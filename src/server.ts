@@ -1,5 +1,9 @@
 import 'dotenv/config';
 
+import fs from 'fs';
+import yaml from 'yaml';
+import path from 'path';
+
 import fastify from "fastify";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCors from "@fastify/cors";
@@ -8,19 +12,11 @@ import fastifyCookie from '@fastify/cookie';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUI from '@fastify/swagger-ui';
 
-import fs from 'fs';
-import yaml from 'yaml';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { appRoutes } from './routes/index.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const yamlPath = join(__dirname, '..', 'swagger.yaml'); // sobe 1 pasta
+const yamlPath = path.resolve(process.cwd(), 'swagger.yaml');
 const yamlContent = fs.readFileSync(yamlPath, 'utf8');
 const swaggerDocument = yaml.parse(yamlContent);
-
-import { appRoutes } from './routes/index.js';
 
 const server = fastify({ logger: true })
 
@@ -57,6 +53,13 @@ server.register(fastifyJwt, {
         signed: false
     }
 })
+
+// server.register(globalRoutes);
+// server.register(authRoutes);
+// server.register(adminRoutes);
+// server.register(groupMuscleRoutes, { prefix: '/groupMuscle' });
+// server.register(exerciseRoutes, { prefix: '/exercise' });
+// server.register(workoutRoutes, { prefix: '/workout' });
 
 server.register(appRoutes);
 
