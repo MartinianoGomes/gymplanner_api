@@ -117,8 +117,6 @@ docker-compose logs -f api
 
 A API estará disponível em `http://localhost:3000`
 
-📖 **Documentação completa sobre Docker:** Veja o arquivo [DOCKER.md](DOCKER.md) para instruções detalhadas.
-
 ---
 
 ## 📚 Documentação da API
