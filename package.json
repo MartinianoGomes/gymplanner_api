@@ -8,7 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "generate": "npx prisma generate",
     "push": "prisma db push",
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",
