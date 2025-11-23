@@ -103,8 +103,6 @@ Siga estes passos para configurar e executar o projeto localmente.
 
 ---
 
-<<<<<<< HEAD
-=======
 ## 🐳 Executar com Docker
 
 Para executar o projeto usando Docker (recomendado para produção):
@@ -121,7 +119,6 @@ A API estará disponível em `http://localhost:3000`
 
 ---
 
->>>>>>> parent of b8154e1 (Update README.md)
 ## 📚 Documentação da API
 
 A API está documentada usando OpenAPI (Swagger). Após iniciar o servidor, a documentação interativa estará disponível em:
