@@ -1,24 +1,24 @@
 import { type FastifyReply, type FastifyRequest } from "fastify";
+import { logout } from "../services/userServices.js";
 
 export const verifyJwt = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
         await request.jwtVerify();
-    } catch (err) {
-        return reply.status(401).send({ message: "Authentication required." });
+    } catch {
+        await logout(reply);
+        return reply.status(401).send({ error: "Authentication required." });
     }
-}
+};
 
-
-export const verifyAdmin = async (request: FastifyRequest, reply: FastifyReply) => {
-    try {
-        await verifyJwt(request, reply);
-
-        if (reply.sent) return;
-
-        if (request.user.role !== "admin") {
-            return reply.status(403).send({ message: "Access denied. Administrator permission required." });
+export function verifyRole(role: "ADMIN" | "USER") {
+    return async (request: FastifyRequest, reply: FastifyReply) => {
+        if (!request.user) {
+            await logout(reply);
+            return reply.status(401).send({ error: "Authentication required." });
         }
-    } catch (err) {
-        return reply.status(401).send({ message: "Invalid or expired authentication token." });
-    }
+
+        if (request.user.role !== role) {
+            return reply.status(403).send({ error: `Access denied. ${role} permission required.` });
+        }
+    };
 }

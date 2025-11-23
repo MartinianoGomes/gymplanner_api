@@ -12,12 +12,7 @@ import fastifyCookie from '@fastify/cookie';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUI from '@fastify/swagger-ui';
 
-import { authRoutes } from "./routes/authRoutes.js";
-import { adminRoutes } from './routes/adminRoutes.js';
-import { globalRoutes } from "./routes/globalRoutes.js";
-import { groupMuscleRoutes } from './routes/groupMuscleRoutes.js';
-import { exerciseRoutes } from './routes/exerciseRoutes.js';
-import { workoutRoutes } from './routes/workoutRoutes.js';
+import { appRoutes } from './routes/index.js';
 
 const yamlPath = path.resolve(process.cwd(), 'swagger.yaml');
 const yamlContent = fs.readFileSync(yamlPath, 'utf8');
@@ -59,12 +54,14 @@ server.register(fastifyJwt, {
     }
 })
 
-server.register(globalRoutes);
-server.register(authRoutes);
-server.register(adminRoutes, { prefix: '/admin' });
-server.register(groupMuscleRoutes, { prefix: '/groupMuscle' });
-server.register(exerciseRoutes, { prefix: '/exercise' });
-server.register(workoutRoutes, { prefix: '/workout' });
+// server.register(globalRoutes);
+// server.register(authRoutes);
+// server.register(adminRoutes);
+// server.register(groupMuscleRoutes, { prefix: '/groupMuscle' });
+// server.register(exerciseRoutes, { prefix: '/exercise' });
+// server.register(workoutRoutes, { prefix: '/workout' });
+
+server.register(appRoutes);
 
 const port = Number(process.env.PORT) || 3000;
 

@@ -1,18 +1,18 @@
 import type { FastifyInstance, FastifyPluginOptions } from "fastify";
 
-async function globalRoutes(fastify: FastifyInstance, options: FastifyPluginOptions) {
-    fastify.get('/', async (req, res) => {
-        const data = {
+export async function globalRoutes(fastify: FastifyInstance, options: FastifyPluginOptions) {
+    fastify.register(globalModule, { prefix: "/gymplanner" });
+}
+
+async function globalModule(app: FastifyInstance) {
+    app.get("/", async () => {
+        return {
             name: "GymPlanner API",
             version: "1.0.0",
             timestamp: new Date().toISOString(),
             status: "success"
-        }
+        };
+    });
 
-        return res.send(data);
-    })
-
-    fastify.get('/ping', (req, res) => res.send({ pong: true }))
+    app.get("/ping", () => ({ pong: true }));
 }
-
-export { globalRoutes }

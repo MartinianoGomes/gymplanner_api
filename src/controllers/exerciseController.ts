@@ -3,7 +3,7 @@ import { prisma } from "../lib/prisma.js";
 import type { Exercise } from "../types/exercise.js";
 import { exerciseSchema } from '../schemas/exerciseSchema.js';
 
-const createExercise = async (request: FastifyRequest, reply: FastifyReply) => {
+export const createExercise = async (request: FastifyRequest, reply: FastifyReply) => {
   const validateExerciseInformations = exerciseSchema.safeParse(request.body as Exercise);
   if (!validateExerciseInformations.success) return reply.status(400).send({ error: "Invalid exercise informations." });
 
@@ -31,7 +31,7 @@ const createExercise = async (request: FastifyRequest, reply: FastifyReply) => {
   }
 }
 
-const getAllExercises = async (_request: FastifyRequest, reply: FastifyReply) => {
+export const getAllExercises = async (_request: FastifyRequest, reply: FastifyReply) => {
   try {
     const exercises = await prisma.exercise.findMany();
 
@@ -41,7 +41,7 @@ const getAllExercises = async (_request: FastifyRequest, reply: FastifyReply) =>
   }
 }
 
-const getExerciseById = async (request: FastifyRequest, reply: FastifyReply) => {
+export const getExerciseById = async (request: FastifyRequest, reply: FastifyReply) => {
   const { id } = request.params as { id: string };
 
   if (!id) return reply.status(400).send({ error: "Please provide the exercise ID." })
@@ -57,7 +57,7 @@ const getExerciseById = async (request: FastifyRequest, reply: FastifyReply) => 
   }
 }
 
-const updateExercise = async (request: FastifyRequest, reply: FastifyReply) => {
+export const updateExercise = async (request: FastifyRequest, reply: FastifyReply) => {
   const { id } = request.params as { id: string };
 
   if (!id) return reply.status(400).send({ error: "Please provide the exercise ID." })
@@ -89,7 +89,7 @@ const updateExercise = async (request: FastifyRequest, reply: FastifyReply) => {
   }
 }
 
-const deleteExercise = async (request: FastifyRequest, reply: FastifyReply) => {
+export const deleteExercise = async (request: FastifyRequest, reply: FastifyReply) => {
   const { id } = request.params as { id: string };
   if (!id) return reply.status(400).send({ error: "Please provide the exercise ID." })
 
@@ -101,5 +101,3 @@ const deleteExercise = async (request: FastifyRequest, reply: FastifyReply) => {
     return reply.status(404).send({ error, message: "Unable to delete the exercise. An error occurred." });
   }
 }
-
-export { createExercise, getAllExercises, getExerciseById, updateExercise, deleteExercise }

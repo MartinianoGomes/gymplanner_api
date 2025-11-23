@@ -1,4 +1,4 @@
-import z, { ZodObject } from "zod";
+import z from "zod";
 
 const groupMuscleSchema = z.object({
     name: z.string().min(1),
