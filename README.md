@@ -103,6 +103,24 @@ Siga estes passos para configurar e executar o projeto localmente.
 
 ---
 
+## 🐳 Executar com Docker
+
+Para executar o projeto usando Docker (recomendado para produção):
+
+```bash
+# Build e inicia os containers
+docker-compose up --build -d
+
+# Visualizar logs
+docker-compose logs -f api
+```
+
+A API estará disponível em `http://localhost:3000`
+
+📖 **Documentação completa sobre Docker:** Veja o arquivo [DOCKER.md](DOCKER.md) para instruções detalhadas.
+
+---
+
 ## 📚 Documentação da API
 
 A API está documentada usando OpenAPI (Swagger). Após iniciar o servidor, a documentação interativa estará disponível em:
