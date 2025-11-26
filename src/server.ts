@@ -47,7 +47,10 @@ if (!jwtSecret) {
 }
 
 server.register(fastifyHelmet)
-server.register(fastifyCors)
+server.register(fastifyCors, {
+    origin: "http://localhost:5173",
+    credentials: true
+})
 server.register(fastifyCookie);
 
 server.register(fastifyJwt, {
