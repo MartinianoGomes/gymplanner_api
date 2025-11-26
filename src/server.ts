@@ -48,7 +48,7 @@ if (!jwtSecret) {
 
 server.register(fastifyHelmet)
 server.register(fastifyCors, {
-    origin: "http://localhost:5173",
+    origin: "https://gymplanner-five.vercel.app/",
     credentials: true
 })
 server.register(fastifyCookie);
