@@ -48,7 +48,9 @@ if (!jwtSecret) {
 
 server.register(fastifyHelmet)
 server.register(fastifyCors, {
-    origin: "https://gymplanner-five.vercel.app",
+    origin: process.env.NODE_ENV === 'production'
+        ? "https://gymplanner-five.vercel.app"
+        : "http://localhost:5173",
     credentials: true
 })
 server.register(fastifyCookie);

@@ -49,8 +49,8 @@ export const userLogin = async (request: FastifyRequest, reply: FastifyReply) =>
         .setCookie('token', token, {
             path: '/',
             httpOnly: true,
-            secure: true,
-            sameSite: 'lax'
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
         })
         .status(200)
         .send({ message: "User logged in successfully." });

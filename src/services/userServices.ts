@@ -36,8 +36,8 @@ export const logout = async (reply: FastifyReply) => {
     reply.clearCookie("token", {
         path: "/",
         httpOnly: true,
-        secure: true,
-        sameSite: "lax"
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     });
 
     return true;
