@@ -16,13 +16,13 @@ import { dirname, join } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const yamlPath = join(__dirname, '..', 'swagger.yaml'); // sobe 1 pasta
+const yamlPath = join(__dirname, '..', 'swagger.yaml');
 const yamlContent = fs.readFileSync(yamlPath, 'utf8');
 const swaggerDocument = yaml.parse(yamlContent);
 
 import { appRoutes } from './routes/index.js';
 
-const server = fastify({ logger: true })
+const server = fastify({ logger: true });
 
 await server.register(fastifySwagger, {
     mode: 'static',
@@ -52,7 +52,7 @@ server.register(fastifyCors, {
         ? "https://gymplanner-five.vercel.app"
         : "http://localhost:5173",
     credentials: true
-})
+});
 server.register(fastifyCookie);
 
 server.register(fastifyJwt, {
@@ -76,4 +76,4 @@ const start = async () => {
     }
 };
 
-start()
+start();
