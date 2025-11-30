@@ -26,14 +26,14 @@ export const createUser = async (request: FastifyRequest, reply: FastifyReply) =
         }
     });
 
-    return {
+    return reply.status(201).send({
         id: user.id,
         name: user.name,
         email: user.email,
         role: user.role?.toUpperCase(),
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
-    }
+    });
 }
 
 export const userLogin = async (request: FastifyRequest, reply: FastifyReply) => {
