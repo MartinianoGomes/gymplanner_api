@@ -11,6 +11,7 @@ export async function adminRoutes(fastify: FastifyInstance) {
     fastify.register(adminUserModule, { prefix: "/admin" });
     fastify.register(adminExerciseModule, { prefix: "/admin" });
     fastify.register(adminGroupMuscleModule, { prefix: "/admin" });
+    fastify.register(adminWorkoutModule, { prefix: "/admin" });
 }
 
 async function adminUserModule(fastify: FastifyInstance) {
@@ -29,4 +30,8 @@ async function adminGroupMuscleModule(fastify: FastifyInstance) {
     fastify.post('/groupMuscle/create', groupMuscleController.createGroupMuscle);
     fastify.patch('/groupMuscle/update/:id', groupMuscleController.updateGroupMuscle);
     fastify.delete('/groupMuscle/delete/:id', groupMuscleController.deleteGroupMuscle);
+}
+
+async function adminWorkoutModule(fastify: FastifyInstance) {
+    fastify.get('/workout', adminController.getAllWorkouts);
 }

@@ -7,7 +7,7 @@ export async function workoutRoutes(fastify: FastifyInstance) {
 
 async function workoutModule(fastify: FastifyInstance, options: FastifyPluginOptions) {
     fastify.post('/create', workoutController.createWorkout);
-    fastify.get('/', workoutController.getAllWorkouts);
+    fastify.get('/', workoutController.getMyWorkouts);
     fastify.get('/:id', workoutController.getWorkoutById);
     fastify.patch('/update/:id', workoutController.updateWorkout);
     fastify.delete('/delete/:id', workoutController.deleteWorkout);

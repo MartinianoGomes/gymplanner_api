@@ -87,3 +87,21 @@ export const deleteUser = async (request: FastifyRequest, reply: FastifyReply) =
         return reply.status(404).send({ error: "Unable to delete the user. An error occurred." });
     }
 }
+
+export const getAllWorkouts = async (_request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const workouts = await prisma.workout.findMany({
+            include: {
+                ExercisesInWorkout: {
+                    include: {
+                        exercise: true
+                    }
+                }
+            }
+        });
+
+        return workouts;
+    } catch (error) {
+        return reply.status(500).send({ error, message: "Unable to fetch workouts." });
+    }
+}
