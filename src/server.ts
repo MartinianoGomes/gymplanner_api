@@ -46,12 +46,16 @@ if (!jwtSecret) {
     process.exit(1);
 }
 
-server.register(fastifyHelmet)
 server.register(fastifyCors, {
     origin: process.env.NODE_ENV === 'production'
         ? "https://gymplanner-five.vercel.app"
         : "http://localhost:5173",
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+});
+server.register(fastifyHelmet, {
+    crossOriginResourcePolicy: { policy: "cross-origin" },
 });
 server.register(fastifyCookie);
 
