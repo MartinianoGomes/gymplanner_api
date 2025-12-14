@@ -78,13 +78,43 @@ export const deleteUser = async (request: FastifyRequest, reply: FastifyReply) =
     if (!id) return reply.status(404).send({ error: "User not found." });
 
     try {
+        // Verificar se o usuário existe
+        const userExists = await prisma.user.findUnique({
+            where: { id }
+        });
+
+        if (!userExists) {
+            return reply.status(404).send({ error: "User not found." });
+        }
+
+        // Primeiro, buscar todos os workouts do usuário
+        const userWorkouts = await prisma.workout.findMany({
+            where: { userId: id },
+            select: { id: true }
+        });
+
+        // Deletar todos os exercícios de cada workout
+        if (userWorkouts.length > 0) {
+            const workoutIds = userWorkouts.map(w => w.id);
+            await prisma.exercisesInWorkout.deleteMany({
+                where: { workoutId: { in: workoutIds } }
+            });
+
+            // Deletar todos os workouts do usuário
+            await prisma.workout.deleteMany({
+                where: { userId: id }
+            });
+        }
+
+        // Finalmente, deletar o usuário
         await prisma.user.delete({
             where: { id }
-        })
+        });
 
         return reply.status(200).send({ message: "User deleted successfully!" });
     } catch (error) {
-        return reply.status(404).send({ error: "Unable to delete the user. An error occurred." });
+        console.error("Error deleting user:", error);
+        return reply.status(500).send({ error: "Unable to delete the user. An error occurred.", details: String(error) });
     }
 }
 

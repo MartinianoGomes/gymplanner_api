@@ -141,6 +141,26 @@ export const deleteProfile = async (request: FastifyRequest, reply: FastifyReply
     }
 
     try {
+        // Primeiro, buscar todos os workouts do usuário
+        const userWorkouts = await prisma.workout.findMany({
+            where: { userId },
+            select: { id: true }
+        });
+
+        // Deletar todos os exercícios de cada workout
+        if (userWorkouts.length > 0) {
+            const workoutIds = userWorkouts.map(w => w.id);
+            await prisma.exercisesInWorkout.deleteMany({
+                where: { workoutId: { in: workoutIds } }
+            });
+
+            // Deletar todos os workouts do usuário
+            await prisma.workout.deleteMany({
+                where: { userId }
+            });
+        }
+
+        // Finalmente, deletar o usuário
         await prisma.user.delete({
             where: { id: userId }
         });
@@ -149,6 +169,7 @@ export const deleteProfile = async (request: FastifyRequest, reply: FastifyReply
 
         return reply.status(200).send({ message: "User profile deleted successfully." });
     } catch (error) {
+        console.error("Error deleting profile:", error);
         return reply.status(400).send({ error: "Unable to delete profile." });
     }
 }

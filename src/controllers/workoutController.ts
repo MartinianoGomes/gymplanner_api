@@ -155,6 +155,12 @@ const deleteWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
       return reply.status(403).send({ error: "Access denied. This workout belongs to another user." });
     }
 
+    // Primeiro deletar todos os exercícios do workout
+    await prisma.exercisesInWorkout.deleteMany({
+      where: { workoutId: id }
+    });
+
+    // Depois deletar o workout
     await prisma.workout.delete({ where: { id } });
 
     return reply.status(200).send({ message: "Workout deleted successfully!" });

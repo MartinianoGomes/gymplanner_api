@@ -94,6 +94,12 @@ export const deleteExercise = async (request: FastifyRequest, reply: FastifyRepl
   if (!id) return reply.status(400).send({ error: "Please provide the exercise ID." })
 
   try {
+    // Primeiro deletar todos os exercícios em workouts vinculados
+    await prisma.exercisesInWorkout.deleteMany({
+      where: { exerciseId: id }
+    });
+
+    // Depois deletar o exercício
     await prisma.exercise.delete({ where: { id } });
 
     return reply.status(200).send({ message: "Exercise deleted successfully!" });
