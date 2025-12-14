@@ -53,7 +53,11 @@ const getMyWorkouts = async (request: FastifyRequest, reply: FastifyReply) => {
       include: {
         ExercisesInWorkout: {
           include: {
-            exercise: true
+            exercise: {
+              include: {
+                groupMuscle: true
+              }
+            }
           }
         }
       }
