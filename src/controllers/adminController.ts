@@ -75,10 +75,11 @@ export const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) 
 
 export const deleteUser = async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
-    if (!id) return reply.status(404).send({ error: "User not found." });
+    if (!id) return reply.status(400).send({ error: "User ID is required." });
 
     try {
         // Verificar se o usuário existe
+<<<<<<< Updated upstream
         const userExists = await prisma.user.findUnique({
             where: { id }
         });
@@ -89,10 +90,20 @@ export const deleteUser = async (request: FastifyRequest, reply: FastifyReply) =
 
         // Primeiro, buscar todos os workouts do usuário
         const userWorkouts = await prisma.workout.findMany({
+=======
+        const user = await prisma.user.findUnique({ where: { id } });
+        if (!user) {
+            return reply.status(404).send({ error: "User not found." });
+        }
+
+        // Buscar todos os treinos do usuário
+        const workouts = await prisma.workout.findMany({
+>>>>>>> Stashed changes
             where: { userId: id },
             select: { id: true }
         });
 
+<<<<<<< Updated upstream
         // Deletar todos os exercícios de cada workout
         if (userWorkouts.length > 0) {
             const workoutIds = userWorkouts.map(w => w.id);
@@ -107,6 +118,22 @@ export const deleteUser = async (request: FastifyRequest, reply: FastifyReply) =
         }
 
         // Finalmente, deletar o usuário
+=======
+        // Deletar exercícios de todos os treinos do usuário
+        if (workouts.length > 0) {
+            const workoutIds = workouts.map(w => w.id);
+            await prisma.exercisesInWorkout.deleteMany({
+                where: { workoutId: { in: workoutIds } }
+            });
+        }
+
+        // Deletar todos os treinos do usuário
+        await prisma.workout.deleteMany({
+            where: { userId: id }
+        });
+
+        // Deletar o usuário
+>>>>>>> Stashed changes
         await prisma.user.delete({
             where: { id }
         });
@@ -114,7 +141,11 @@ export const deleteUser = async (request: FastifyRequest, reply: FastifyReply) =
         return reply.status(200).send({ message: "User deleted successfully!" });
     } catch (error) {
         console.error("Error deleting user:", error);
+<<<<<<< Updated upstream
         return reply.status(500).send({ error: "Unable to delete the user. An error occurred.", details: String(error) });
+=======
+        return reply.status(500).send({ error: "Unable to delete the user. An error occurred." });
+>>>>>>> Stashed changes
     }
 }
 

@@ -10,7 +10,11 @@ const addExercise = async ({ workoutId, exerciseId, series, reps }: AddExerciseD
             reps: reps,
         },
         include: {
-            exercise: true
+            exercise: {
+                include: {
+                    groupMuscle: true
+                }
+            }
         }
     });
     return exerciseInWorkout;

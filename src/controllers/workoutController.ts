@@ -32,7 +32,11 @@ const createWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
       include: {
         ExercisesInWorkout: {
           include: {
-            exercise: true
+            exercise: {
+              include: {
+                groupMuscle: true
+              }
+            }
           }
         }
       }
@@ -81,7 +85,11 @@ const getWorkoutById = async (request: FastifyRequest, reply: FastifyReply) => {
       include: {
         ExercisesInWorkout: {
           include: {
-            exercise: true
+            exercise: {
+              include: {
+                groupMuscle: true
+              }
+            }
           }
         }
       }
@@ -155,16 +163,24 @@ const deleteWorkout = async (request: FastifyRequest, reply: FastifyReply) => {
       return reply.status(403).send({ error: "Access denied. This workout belongs to another user." });
     }
 
+<<<<<<< Updated upstream
     // Primeiro deletar todos os exercícios do workout
     await prisma.exercisesInWorkout.deleteMany({
       where: { workoutId: id }
     });
 
     // Depois deletar o workout
+=======
+    // Primeiro, deletar todos os exercícios vinculados ao treino
+    await prisma.exercisesInWorkout.deleteMany({ where: { workoutId: id } });
+
+    // Depois, deletar o treino
+>>>>>>> Stashed changes
     await prisma.workout.delete({ where: { id } });
 
     return reply.status(200).send({ message: "Workout deleted successfully!" });
   } catch (error) {
+    console.error("Error deleting workout:", error);
     return reply.status(500).send({ error, message: "Unable to delete the workout. An error occurred." });
   }
 }
