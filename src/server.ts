@@ -51,13 +51,8 @@ server.register(fastifyCors, {
         ? "https://gymplanner-five.vercel.app"
         : "http://localhost:5173",
     credentials: true,
-<<<<<<< Updated upstream
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
-=======
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
->>>>>>> Stashed changes
 });
 server.register(fastifyHelmet, {
     crossOriginResourcePolicy: { policy: "cross-origin" },
