@@ -94,9 +94,6 @@ export const deleteExercise = async (request: FastifyRequest, reply: FastifyRepl
   if (!id) return reply.status(400).send({ error: "Please provide the exercise ID." })
 
   try {
-<<<<<<< Updated upstream
-    // Primeiro deletar todos os exercícios em workouts vinculados
-=======
     // Verificar se o exercício existe
     const exercise = await prisma.exercise.findUnique({ where: { id } });
     if (!exercise) {
@@ -104,16 +101,11 @@ export const deleteExercise = async (request: FastifyRequest, reply: FastifyRepl
     }
 
     // Deletar todos os registros deste exercício nos treinos
->>>>>>> Stashed changes
     await prisma.exercisesInWorkout.deleteMany({
       where: { exerciseId: id }
     });
 
-<<<<<<< Updated upstream
-    // Depois deletar o exercício
-=======
     // Deletar o exercício
->>>>>>> Stashed changes
     await prisma.exercise.delete({ where: { id } });
 
     return reply.status(200).send({ message: "Exercise deleted successfully!" });

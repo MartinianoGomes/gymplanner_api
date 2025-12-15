@@ -92,9 +92,6 @@ const deleteGroupMuscle = async (request: FastifyRequest, reply: FastifyReply) =
   if (!id) return reply.status(400).send({ error: "Please provide the muscle group ID." })
 
   try {
-<<<<<<< Updated upstream
-    // Buscar todos os exercícios deste grupo muscular
-=======
     // Verificar se o grupo muscular existe
     const groupMuscle = await prisma.groupMuscle.findUnique({ where: { id } });
     if (!groupMuscle) {
@@ -102,24 +99,16 @@ const deleteGroupMuscle = async (request: FastifyRequest, reply: FastifyReply) =
     }
 
     // Buscar todos os exercícios do grupo muscular
->>>>>>> Stashed changes
     const exercises = await prisma.exercise.findMany({
       where: { groupMuscleId: id },
       select: { id: true }
     });
 
-<<<<<<< Updated upstream
-    // Deletar todos os exercícios em workouts vinculados a esses exercícios
-    for (const exercise of exercises) {
-      await prisma.exercisesInWorkout.deleteMany({
-        where: { exerciseId: exercise.id }
-=======
     // Deletar todos os exercícios dos treinos que usam exercícios deste grupo
     if (exercises.length > 0) {
       const exerciseIds = exercises.map(e => e.id);
       await prisma.exercisesInWorkout.deleteMany({
         where: { exerciseId: { in: exerciseIds } }
->>>>>>> Stashed changes
       });
     }
 
@@ -128,11 +117,7 @@ const deleteGroupMuscle = async (request: FastifyRequest, reply: FastifyReply) =
       where: { groupMuscleId: id }
     });
 
-<<<<<<< Updated upstream
-    // Finalmente deletar o grupo muscular
-=======
     // Deletar o grupo muscular
->>>>>>> Stashed changes
     await prisma.groupMuscle.delete({ where: { id } });
 
     return reply.status(200).send({ message: "Group muscle deleted successfully!" });
