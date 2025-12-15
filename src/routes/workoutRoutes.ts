@@ -7,11 +7,7 @@ export async function workoutRoutes(fastify: FastifyInstance) {
 }
 
 async function workoutModule(fastify: FastifyInstance, options: FastifyPluginOptions) {
-<<<<<<< Updated upstream
-    // Aplica verificação de JWT em todas as rotas de workout
-=======
     // Aplicar autenticação a todas as rotas de workout
->>>>>>> Stashed changes
     fastify.addHook("onRequest", verifyJwt);
 
     fastify.post('/create', workoutController.createWorkout);
